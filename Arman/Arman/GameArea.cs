@@ -69,6 +69,8 @@ namespace Arman
 
             detectorsForWin = getDetectors();
 
+            potvory.Add(new Potvora(game, new PositionInGrid(10), game.Content.Load<Texture2D>(@"Sprites/potvora"), gameArray, blockSize, gameSpeed, movableObjects));
+
             base.Initialize();
         }
 
@@ -94,7 +96,7 @@ namespace Arman
             player.Update(gameTime);
             foreach (Potvora potvora in potvory)
             {
-
+                potvora.Update(gameTime);
             }
 
             base.Update(gameTime);
@@ -167,24 +169,24 @@ namespace Arman
         {
             keyPressTimeLimit++;
 
-            if(keyboardState.IsKeyDown(Keys.Up) && keyPressTimeLimit > gameSpeed)
+            if(keyboardState.IsKeyDown(Keys.Up))
             {
-                if(player.Move(Direction.up, gameSpeed))
+                if(player.Move(Direction.up))
                     keyPressTimeLimit = 0;
             }
-            else if (keyboardState.IsKeyDown(Keys.Down) && keyPressTimeLimit > gameSpeed)
+            else if (keyboardState.IsKeyDown(Keys.Down))
             {
-                if (player.Move(Direction.down, gameSpeed))
+                if (player.Move(Direction.down))
                     keyPressTimeLimit = 0;
             }
-            else if (keyboardState.IsKeyDown(Keys.Left) && keyPressTimeLimit > gameSpeed)
+            else if (keyboardState.IsKeyDown(Keys.Left))
             {
-                if (player.Move(Direction.left, gameSpeed))
+                if (player.Move(Direction.left))
                     keyPressTimeLimit = 0;
             }
-            else if (keyboardState.IsKeyDown(Keys.Right) && keyPressTimeLimit > gameSpeed)
+            else if (keyboardState.IsKeyDown(Keys.Right)/* && keyPressTimeLimit > gameSpeed*/)
             {
-                if (player.Move(Direction.right, gameSpeed))
+                if (player.Move(Direction.right))
                     keyPressTimeLimit = 0;
             }
 

@@ -19,9 +19,11 @@ namespace Arman
         protected int oneBlockSize;
         protected int timeForMove;
         protected List<MovableObject> movableObjects;
+        public bool Blocked { get; set; }
 
         public MovableObject(Arman game, PositionInGrid positionInGrid, Texture2D texture, Block[,] gameArray, int oneBlockSize, int timeForMove, List<MovableObject> movableObjects)
         {
+            Blocked = false;
             this.game = game;
             PositionInGrid = positionInGrid;
             this.Texture = texture;
@@ -33,8 +35,7 @@ namespace Arman
             movingDifference = 0.0F;
             movingDirection = Direction.up;
         }
-
-        public virtual bool Move (Direction direction, int movingTime)
+        public virtual bool Move (Direction direction)
         {
             switch(direction)
             {
@@ -86,6 +87,10 @@ namespace Arman
         }
         public virtual bool TryMove(PositionInGrid position)
         {
+            if (isMoving)
+                return false;
+            if (Blocked)
+                return false;
             if (position.X >= gameArray.GetLength(0) || position.Y >= gameArray.GetLength(1) || position.X < 0 || position.Y < 0)
                 return false;
             else if ((gameArray[position.X, position.Y] as Block).Type == BlockType.solid)
@@ -131,7 +136,6 @@ namespace Arman
         }
         public virtual void Update(GameTime gameTime)
         {
-
         }
     }
 }

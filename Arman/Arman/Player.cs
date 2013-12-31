@@ -20,7 +20,7 @@ namespace Arman
         {
             this.gameArea = gameArea;
         }
-        public override bool Move(Direction direction, int movingTime)
+        public override bool Move(Direction direction)
         {
             //zabezpeèení posunu kostek
             IEnumerable<PositionInGrid> positions = from block in movableObjects
@@ -35,7 +35,7 @@ namespace Arman
                                                       where block.PositionInGrid.Y == PositionInGrid.Y - 1
                                                       select block)
                                                       .First();
-                        if (!selectedBlock.Move(direction, movingTime))
+                        if (!selectedBlock.Move(direction))
                             return false;
                     }
                     break;
@@ -47,7 +47,7 @@ namespace Arman
                                                       where block.PositionInGrid.Y == PositionInGrid.Y + 1
                                                       select block)
                                                       .First();
-                        if (!selectedBlock.Move(direction, movingTime))
+                        if (!selectedBlock.Move(direction))
                             return false;
                     }
                     break;
@@ -59,7 +59,7 @@ namespace Arman
                                                       where block.PositionInGrid.Y == PositionInGrid.Y
                                                       select block)
                                                       .First();
-                        if (!selectedBlock.Move(direction, movingTime))
+                        if (!selectedBlock.Move(direction))
                             return false;
                     }
                     break;
@@ -71,12 +71,12 @@ namespace Arman
                                                       where block.PositionInGrid.Y == PositionInGrid.Y
                                                       select block)
                                                       .First();
-                        if (!selectedBlock.Move(direction, movingTime))
+                        if (!selectedBlock.Move(direction))
                             return false;
                     }
                     break;
             }
-            return base.Move(direction, movingTime);
+            return base.Move(direction);
         }
         public override void Update(GameTime gameTime)
         {

@@ -9,19 +9,11 @@ namespace Arman
 {
     public class MovableBlock : MovableObject
     {
-        public bool Blocked { get; set; }
         public MovableBlock(Arman game, PositionInGrid positionInGrid, Texture2D texture, Block[,] gameArray, int oneBlockSize, int timeForMove, List<MovableObject> movableObjects)
             : base(game, positionInGrid, texture, gameArray, oneBlockSize, timeForMove, movableObjects)
         {
-            Blocked = false;
         }
-        public override bool TryMove(PositionInGrid position)
-        {
-            if (Blocked)
-                return false;
-            return base.TryMove(position);
-        }
-        public override bool Move(Direction direction, int movingTime)
+        public override bool Move(Direction direction)
         {
             IEnumerable<PositionInGrid> positions = from mObject in movableObjects
                                                     select mObject.PositionInGrid;
@@ -47,7 +39,7 @@ namespace Arman
             if (stop)
                 return false;
             else
-                return base.Move(direction, movingTime);
+                return base.Move(direction);
         }
     }
 }
