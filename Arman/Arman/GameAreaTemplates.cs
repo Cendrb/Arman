@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -137,12 +138,13 @@ namespace Arman
             GA.CreateBlock(BlockType.coin, new PositionInGrid(1, 3));
             GA.CreateBlock(BlockType.coin, new PositionInGrid(1, 5));
             //players
-            GA.SpawnEntity(EntityType.player, new PositionInGrid(1));
+            GA.SpawnPlayer(new PositionInGrid(1), new Controls(Keys.Up, Keys.Right, Keys.Down, Keys.Left));
+            GA.SpawnPlayer(new PositionInGrid(30, 20), new Controls(Keys.W, Keys.D, Keys.S, Keys.A));
             //mobs
             GA.SpawnMob(new PositionInGrid(8), 40, 3);
             GA.SpawnMob(new PositionInGrid(8), 40, 3);
             GA.SpawnMob(new PositionInGrid(8), 40, 4);
-            GA.SpawnMob(new PositionInGrid(8), 5, 7);
+            GA.SpawnMob(new PositionInGrid(8), 5, 6);
             GA.SpawnMob(new PositionInGrid(8), 40, 4);
         }
     }

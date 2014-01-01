@@ -28,7 +28,6 @@ namespace Arman
 
         public static List<Entity> entities;
         public List<GameTarget> gameTargets;
-        private KeyboardState keyboardState;
         private int blockSize;
         private int detectorsForWin;
         private bool won;
@@ -74,11 +73,8 @@ namespace Arman
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            keyboardState = Keyboard.GetState();
-            moveControl();
             if (hasWon())
                 won = true;
-
             foreach (DrawableGameComponent comp in gameArray)
             {
                 comp.Update(gameTime);
@@ -87,7 +83,13 @@ namespace Arman
             {
                 mo.Update(gameTime);
             }
-
+            IEnumerable<Player> players = from entity in entities
+                                          where entity is Player
+                                          select (Player)entity;
+            foreach(Player player in players)
+            {
+                player.ReactToControls();
+            }
             base.Update(gameTime);
         }
 
@@ -148,39 +150,6 @@ namespace Arman
             coord.Y += 290;
             game.spriteBatch.Draw(entity.Texture, coord, Color.White);
         }
-        private void moveControl()
-        {
-            IEnumerable<Player> players = from entity in entities
-                                          where entity is Player
-                                          select (Player)entity;
-            Player player = players.First();
-
-            keyPressTimeLimit++;
-
-            if(keyboardState.IsKeyDown(Keys.Up))
-            {
-                if(player.Move(Direction.up))
-                    keyPressTimeLimit = 0;
-            }
-            else if (keyboardState.IsKeyDown(Keys.Down))
-            {
-                if (player.Move(Direction.down))
-                    keyPressTimeLimit = 0;
-            }
-            else if (keyboardState.IsKeyDown(Keys.Left))
-            {
-                if (player.Move(Direction.left))
-                    keyPressTimeLimit = 0;
-            }
-            else if (keyboardState.IsKeyDown(Keys.Right))
-            {
-                if (player.Move(Direction.right))
-                    keyPressTimeLimit = 0;
-            }
-
-            if (keyPressTimeLimit > 1000)
-                keyPressTimeLimit = 50;
-        }
         private Block loadAndInitializeBlock(Block block)
         {
             block.Initialize();
@@ -196,10 +165,9 @@ namespace Arman
             else
                 gameArray[position.X, position.Y] = loadAndInitializeBlock(new Block(game, type, position, blockSize));
         }
-        public void SpawnEntity(EntityType type, PositionInGrid position)
+        public void SpawnPlayer(PositionInGrid position, Controls controls)
         {
-            if (type == EntityType.player)
-                entities.Add(new Player(game, position, game.Content.Load<Texture2D>(@"Sprites/player"), gameArray, blockSize, gameSpeed, entities, this));
+            entities.Add(new Player(game, position, game.Content.Load<Texture2D>(@"Sprites/player"), gameArray, blockSize, gameSpeed, entities, this, controls));
         }
         public void SpawnMob(PositionInGrid position, int range, int speed)
         {

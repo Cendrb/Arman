@@ -15,10 +15,16 @@ namespace Arman
     public class Player : Entity
     {
         private GameArea gameArea;
-        public Player(Arman game, PositionInGrid positionInGrid, Texture2D texture, Block[,] gameArray, int oneBlockSize, int timeForMove, List<Entity> movableObjects, GameArea gameArea)
+        private Controls controls;
+        private KeyboardState keyboardState;
+        private PositionInGrid spawnPoint;
+
+        public Player(Arman game, PositionInGrid positionInGrid, Texture2D texture, Block[,] gameArray, int oneBlockSize, int timeForMove, List<Entity> movableObjects, GameArea gameArea, Controls controls)
             : base(game, positionInGrid, texture, gameArray, oneBlockSize, timeForMove, movableObjects)
         {
             this.gameArea = gameArea;
+            this.controls = controls;
+            spawnPoint = positionInGrid;
         }
         public override bool Move(Direction direction)
         {
@@ -80,6 +86,7 @@ namespace Arman
         }
         public override void Update(GameTime gameTime)
         {
+            keyboardState = Keyboard.GetState();
             base.Update(gameTime);
             //zabezpeèení sbírání bodíkù
             if (gameArray[PositionInGrid.X, PositionInGrid.Y].Type == BlockType.coin && !this.isMoving)
@@ -89,7 +96,26 @@ namespace Arman
         }
         public void Die()
         {
-            this.PositionInGrid = new PositionInGrid(1);
+            this.PositionInGrid = spawnPoint;
+        }
+        public void ReactToControls()
+        {
+            if (keyboardState.IsKeyDown(controls.up))
+            {
+                this.Move(Direction.up);
+            }
+            else if (keyboardState.IsKeyDown(controls.down))
+            {
+                this.Move(Direction.down);
+            }
+            else if (keyboardState.IsKeyDown(controls.left))
+            {
+                this.Move(Direction.left);
+            }
+            else if (keyboardState.IsKeyDown(controls.right))
+            {
+                this.Move(Direction.right);
+            }
         }
     }
 }

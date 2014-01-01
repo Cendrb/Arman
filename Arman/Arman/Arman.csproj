@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="BetterSpriteBatch.cs" />
     <Compile Include="Block.cs" />
+    <Compile Include="Controls.cs" />
     <Compile Include="Detector.cs" />
     <Compile Include="GameArea.cs" />
     <Compile Include="GameAreaTemplates.cs" />
