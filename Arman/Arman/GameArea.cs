@@ -26,11 +26,9 @@ namespace Arman
 
         private Block[,] gameArray;
 
-        private List<Mob> mobs;
-        public static List<Entity> movableObjects;
+        public static List<Entity> entities;
         public List<GameTarget> gameTargets;
         private KeyboardState keyboardState;
-        private List<Player> players;
         private int blockSize;
         private int detectorsForWin;
         private bool won;
@@ -41,13 +39,11 @@ namespace Arman
             this.game = game;
 
             keyPressTimeLimit = 0;
-            gameSpeed = 15;
+            gameSpeed = 10;
             blockSize = 20;
-            movableObjects = new List<Entity>();
+            entities = new List<Entity>();
             won = false;
             gameTargets = new List<GameTarget>();
-            mobs = new List<Mob>();
-            players = new List<Player>();
         }
 
         /// <summary>
@@ -87,17 +83,9 @@ namespace Arman
             {
                 comp.Update(gameTime);
             }
-            foreach(Entity mo in movableObjects)
+            foreach(Entity mo in entities)
             {
                 mo.Update(gameTime);
-            }
-            foreach(Player player in players)
-            {
-                player.Update(gameTime);
-            }
-            foreach (Mob mob in mobs)
-            {
-                mob.Update(gameTime);
             }
 
             base.Update(gameTime);
@@ -125,18 +113,10 @@ namespace Arman
                 comp.Draw(gameTime);
             }
 
-            foreach (MovableBlock block in movableObjects)
+            foreach (Entity entity in entities)
             {
-                convertRelativeCoordinatesToAbsoluteAndDraw(block);
+                convertRelativeCoordinatesToAbsoluteAndDraw(entity);
             }
-            foreach (Player player in players)
-            {
-                convertRelativeCoordinatesToAbsoluteAndDraw(player);
-            }
-
-            foreach (Mob mob in mobs)
-                convertRelativeCoordinatesToAbsoluteAndDraw(mob);
-
             if (won)
                 Won();
 
@@ -161,15 +141,18 @@ namespace Arman
                 game.spriteBatch.DrawStringWithShadow(game.fontCourierNew, "Zdrhni do baráku!" , new Vector2(160, 200), Color.OrangeRed);
             }
         }
-        private void convertRelativeCoordinatesToAbsoluteAndDraw(Entity mObject)
+        private void convertRelativeCoordinatesToAbsoluteAndDraw(Entity entity)
         {
-            Vector2 coord = mObject.GetRelativeCoordinates();
+            Vector2 coord = entity.GetRelativeCoordinates();
             coord.X += 510;
             coord.Y += 290;
-            game.spriteBatch.Draw(mObject.Texture, coord, Color.White);
+            game.spriteBatch.Draw(entity.Texture, coord, Color.White);
         }
         private void moveControl()
         {
+            IEnumerable<Player> players = from entity in entities
+                                          where entity is Player
+                                          select (Player)entity;
             Player player = players.First();
 
             keyPressTimeLimit++;
@@ -207,7 +190,7 @@ namespace Arman
         public void CreateBlock(BlockType type, PositionInGrid position)
         {
             if (type == BlockType.movable)
-                movableObjects.Add(new MovableBlock(game, position, game.Content.Load<Texture2D>(@"Sprites/Blocks/movable"), gameArray, blockSize, gameSpeed, movableObjects));
+                entities.Add(new MovableBlock(game, position, game.Content.Load<Texture2D>(@"Sprites/Blocks/movable"), gameArray, blockSize, gameSpeed, entities));
             else if (type == BlockType.detector)
                 gameArray[position.X, position.Y] = loadAndInitializeBlock(new Detector(game, BlockType.detector, position, blockSize, detectorActivated));
             else
@@ -215,10 +198,12 @@ namespace Arman
         }
         public void SpawnEntity(EntityType type, PositionInGrid position)
         {
-            if (type == EntityType.mob)
-                mobs.Add(new Mob(game, position, game.Content.Load<Texture2D>(@"Sprites/potvora"), gameArray, blockSize, gameSpeed, movableObjects, players, mobs));
-            else
-                players.Add(new Player(game, position, game.Content.Load<Texture2D>(@"Sprites/player"), gameArray, blockSize, gameSpeed, movableObjects, this));
+            if (type == EntityType.player)
+                entities.Add(new Player(game, position, game.Content.Load<Texture2D>(@"Sprites/player"), gameArray, blockSize, gameSpeed, entities, this));
+        }
+        public void SpawnMob(PositionInGrid position, int range, int speed)
+        {
+            entities.Add(new Mob(game, position, game.Content.Load<Texture2D>(@"Sprites/potvora"), gameArray, blockSize, gameSpeed, entities, range, speed));
         }
         private void detectorActivated()
         {

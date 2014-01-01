@@ -31,10 +31,10 @@ namespace Arman
                     if (positions.Contains(new PositionInGrid(PositionInGrid.X, PositionInGrid.Y - 1)))
                     {
                         Entity selectedBlock = (from block in movableObjects
-                                                      where block.PositionInGrid.X == PositionInGrid.X
-                                                      where block.PositionInGrid.Y == PositionInGrid.Y - 1
-                                                      select block)
-                                                      .First();
+                                                where block.PositionInGrid.X == PositionInGrid.X
+                                                where block.PositionInGrid.Y == PositionInGrid.Y - 1
+                                                select block)
+                                                .First();
                         if (!selectedBlock.Move(direction))
                             return false;
                     }

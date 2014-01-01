@@ -139,10 +139,11 @@ namespace Arman
             //players
             GA.SpawnEntity(EntityType.player, new PositionInGrid(1));
             //mobs
-            GA.SpawnEntity(EntityType.mob, new PositionInGrid(5));
-            GA.SpawnEntity(EntityType.mob, new PositionInGrid(6));
-            GA.SpawnEntity(EntityType.mob, new PositionInGrid(7));
-            GA.SpawnEntity(EntityType.mob, new PositionInGrid(8));
+            GA.SpawnMob(new PositionInGrid(8), 40, 3);
+            GA.SpawnMob(new PositionInGrid(8), 40, 3);
+            GA.SpawnMob(new PositionInGrid(8), 40, 4);
+            GA.SpawnMob(new PositionInGrid(8), 5, 7);
+            GA.SpawnMob(new PositionInGrid(8), 40, 4);
         }
     }
 }

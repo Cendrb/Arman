@@ -18,7 +18,7 @@ namespace Arman
         }
         public override void Update(GameTime gameTime)
         {
-            IEnumerable<Entity> choosenBlocks = from block in GameArea.movableObjects
+            IEnumerable<Entity> choosenBlocks = from block in GameArea.entities
                                                        where block is MovableBlock
                                                        where block.PositionInGrid.X == Position.X
                                                        where block.PositionInGrid.Y == Position.Y
@@ -27,7 +27,7 @@ namespace Arman
             {
                 detectorActivated();
                 alreadyActivated = true;
-                ((MovableBlock)GameArea.movableObjects[GameArea.movableObjects.IndexOf(choosenBlocks.First())]).Blocked = true;
+                ((MovableBlock)GameArea.entities[GameArea.entities.IndexOf(choosenBlocks.First())]).Blocked = true;
             }
             base.Update(gameTime);
         }
