@@ -7,9 +7,9 @@ using System.Text;
 
 namespace Arman
 {
-    public class MovableBlock : MovableObject
+    public class MovableBlock : Entity
     {
-        public MovableBlock(Arman game, PositionInGrid positionInGrid, Texture2D texture, Block[,] gameArray, int oneBlockSize, int timeForMove, List<MovableObject> movableObjects)
+        public MovableBlock(Arman game, PositionInGrid positionInGrid, Texture2D texture, Block[,] gameArray, int oneBlockSize, int timeForMove, List<Entity> movableObjects)
             : base(game, positionInGrid, texture, gameArray, oneBlockSize, timeForMove, movableObjects)
         {
         }

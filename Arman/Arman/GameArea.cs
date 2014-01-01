@@ -26,8 +26,8 @@ namespace Arman
 
         private Block[,] gameArray;
 
-        private List<Potvora> potvory;
-        public static List<MovableObject> movableObjects;
+        private List<Mob> mobs;
+        public static List<Entity> movableObjects;
         public List<GameTarget> gameTargets;
         private KeyboardState keyboardState;
         private List<Player> players;
@@ -41,12 +41,12 @@ namespace Arman
             this.game = game;
 
             keyPressTimeLimit = 0;
-            gameSpeed = 8;
+            gameSpeed = 15;
             blockSize = 20;
-            movableObjects = new List<MovableObject>();
+            movableObjects = new List<Entity>();
             won = false;
             gameTargets = new List<GameTarget>();
-            potvory = new List<Potvora>();
+            mobs = new List<Mob>();
             players = new List<Player>();
         }
 
@@ -66,11 +66,8 @@ namespace Arman
                 {
                     CreateBlock(BlockType.nonsolid, new PositionInGrid(x, y));
                 }
-            players.Add(new Player(game, new PositionInGrid(0), game.Content.Load<Texture2D>(@"Sprites/player"), gameArray, blockSize, gameSpeed, movableObjects, this));
-
+            
             detectorsForWin = getDetectors();
-
-            potvory.Add(new Potvora(game, new PositionInGrid(10), game.Content.Load<Texture2D>(@"Sprites/potvora"), gameArray, blockSize, gameSpeed + 5, movableObjects, players));
 
             base.Initialize();
         }
@@ -90,7 +87,7 @@ namespace Arman
             {
                 comp.Update(gameTime);
             }
-            foreach(MovableObject mo in movableObjects)
+            foreach(Entity mo in movableObjects)
             {
                 mo.Update(gameTime);
             }
@@ -98,9 +95,9 @@ namespace Arman
             {
                 player.Update(gameTime);
             }
-            foreach (Potvora potvora in potvory)
+            foreach (Mob mob in mobs)
             {
-                potvora.Update(gameTime);
+                mob.Update(gameTime);
             }
 
             base.Update(gameTime);
@@ -137,8 +134,8 @@ namespace Arman
                 convertRelativeCoordinatesToAbsoluteAndDraw(player);
             }
 
-            foreach (Potvora potvora in potvory)
-                convertRelativeCoordinatesToAbsoluteAndDraw(potvora);
+            foreach (Mob mob in mobs)
+                convertRelativeCoordinatesToAbsoluteAndDraw(mob);
 
             if (won)
                 Won();
@@ -164,7 +161,7 @@ namespace Arman
                 game.spriteBatch.DrawStringWithShadow(game.fontCourierNew, "Zdrhni do baráku!" , new Vector2(160, 200), Color.OrangeRed);
             }
         }
-        private void convertRelativeCoordinatesToAbsoluteAndDraw(MovableObject mObject)
+        private void convertRelativeCoordinatesToAbsoluteAndDraw(Entity mObject)
         {
             Vector2 coord = mObject.GetRelativeCoordinates();
             coord.X += 510;
@@ -215,6 +212,13 @@ namespace Arman
                 gameArray[position.X, position.Y] = loadAndInitializeBlock(new Detector(game, BlockType.detector, position, blockSize, detectorActivated));
             else
                 gameArray[position.X, position.Y] = loadAndInitializeBlock(new Block(game, type, position, blockSize));
+        }
+        public void SpawnEntity(EntityType type, PositionInGrid position)
+        {
+            if (type == EntityType.mob)
+                mobs.Add(new Mob(game, position, game.Content.Load<Texture2D>(@"Sprites/potvora"), gameArray, blockSize, gameSpeed, movableObjects, players, mobs));
+            else
+                players.Add(new Player(game, position, game.Content.Load<Texture2D>(@"Sprites/player"), gameArray, blockSize, gameSpeed, movableObjects, this));
         }
         private void detectorActivated()
         {

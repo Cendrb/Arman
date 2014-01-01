@@ -18,7 +18,7 @@ namespace Arman
         }
         public override void Update(GameTime gameTime)
         {
-            IEnumerable<MovableObject> choosenBlocks = from block in GameArea.movableObjects
+            IEnumerable<Entity> choosenBlocks = from block in GameArea.movableObjects
                                                        where block is MovableBlock
                                                        where block.PositionInGrid.X == Position.X
                                                        where block.PositionInGrid.Y == Position.Y

@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Arman
 {
+    public enum EntityType { player, mob }
     public enum BlockType { solid, nonsolid, movable, detector, coin }
     public enum Direction { up, down, left, right }
     public enum GameTarget { collectAllCoins, getHome, placeBlocksOnDetectors };

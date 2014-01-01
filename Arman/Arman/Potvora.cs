@@ -6,31 +6,53 @@ using System.Text;
 
 namespace Arman
 {
-    public class Potvora : MovableObject
+    public class Mob : Entity
     {
         private List<Player> players;
-        public Potvora(Arman game, PositionInGrid positionInGrid, Texture2D texture, Block[,] gameArray, int oneBlockSize, int timeForMove, List<MovableObject> movableObjects, List<Player> players)
+        private List<Mob> mobs;
+
+        public Mob(Arman game, PositionInGrid positionInGrid, Texture2D texture, Block[,] gameArray, int oneBlockSize, int timeForMove, List<Entity> movableObjects, List<Player> players, List<Mob> mobs)
             :base(game, positionInGrid, texture, gameArray, oneBlockSize, timeForMove, movableObjects)
         {
             this.players = players;
+            this.mobs = mobs;
         }
         private void walk()
         {
+            foreach(Player player in players)
+            {
+                if (player.PositionInGrid == new PositionInGrid(PositionInGrid.X - 1, PositionInGrid.Y))
+                    this.Move(Direction.left);
+                if (player.PositionInGrid == new PositionInGrid(PositionInGrid.X + 1, PositionInGrid.Y))
+                    this.Move(Direction.right);
+                if (player.PositionInGrid == new PositionInGrid(PositionInGrid.X, PositionInGrid.Y - 1))
+                    this.Move(Direction.up);
+                if (player.PositionInGrid == new PositionInGrid(PositionInGrid.X, PositionInGrid.Y + 1))
+                    this.Move(Direction.down);
+            }
             Random random = new Random();
             switch(random.Next(0, 10))
             {
                 case 0:
-                    this.Move(Direction.left);
-                    break;
+                    if (this.Move(Direction.left))
+                        break;
+                    else
+                        return;
                 case 1:
-                    this.Move(Direction.up);
-                    break;
+                    if (this.Move(Direction.up))
+                        break;
+                    else
+                        return;
                 case 2:
-                    this.Move(Direction.right);
-                    break;
+                    if (this.Move(Direction.right))
+                        break;
+                    else
+                        return;
                 case 3:
-                    this.Move(Direction.down);
-                    break;
+                    if (this.Move(Direction.down))
+                        break;
+                    else
+                        return;
             }
         }
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
@@ -45,6 +67,10 @@ namespace Arman
                 player.Die();
             }
             base.Update(gameTime);
+        }
+        public override bool TryMove(PositionInGrid position)
+        {
+            return base.TryMove(position);
         }
     } 
 }

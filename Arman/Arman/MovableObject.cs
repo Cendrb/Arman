@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Arman
 {
-    public class MovableObject
+    public class Entity
     {
         protected Arman game;
         public Texture2D Texture { get; private set; }
@@ -18,10 +18,10 @@ namespace Arman
         protected Direction movingDirection;
         protected int oneBlockSize;
         protected int timeForMove;
-        protected List<MovableObject> movableObjects;
+        protected List<Entity> movableObjects;
         public bool Blocked { get; set; }
 
-        public MovableObject(Arman game, PositionInGrid positionInGrid, Texture2D texture, Block[,] gameArray, int oneBlockSize, int timeForMove, List<MovableObject> movableObjects)
+        public Entity(Arman game, PositionInGrid positionInGrid, Texture2D texture, Block[,] gameArray, int oneBlockSize, int timeForMove, List<Entity> movableObjects)
         {
             Blocked = false;
             this.game = game;

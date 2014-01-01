@@ -136,6 +136,13 @@ namespace Arman
             GA.CreateBlock(BlockType.coin, new PositionInGrid(1, 1));
             GA.CreateBlock(BlockType.coin, new PositionInGrid(1, 3));
             GA.CreateBlock(BlockType.coin, new PositionInGrid(1, 5));
+            //players
+            GA.SpawnEntity(EntityType.player, new PositionInGrid(1));
+            //mobs
+            GA.SpawnEntity(EntityType.mob, new PositionInGrid(5));
+            GA.SpawnEntity(EntityType.mob, new PositionInGrid(6));
+            GA.SpawnEntity(EntityType.mob, new PositionInGrid(7));
+            GA.SpawnEntity(EntityType.mob, new PositionInGrid(8));
         }
     }
 }

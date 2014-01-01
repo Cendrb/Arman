@@ -12,10 +12,10 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Arman
 {
-    public class Player : MovableObject
+    public class Player : Entity
     {
         private GameArea gameArea;
-        public Player(Arman game, PositionInGrid positionInGrid, Texture2D texture, Block[,] gameArray, int oneBlockSize, int timeForMove, List<MovableObject> movableObjects, GameArea gameArea)
+        public Player(Arman game, PositionInGrid positionInGrid, Texture2D texture, Block[,] gameArray, int oneBlockSize, int timeForMove, List<Entity> movableObjects, GameArea gameArea)
             : base(game, positionInGrid, texture, gameArray, oneBlockSize, timeForMove, movableObjects)
         {
             this.gameArea = gameArea;
@@ -30,7 +30,7 @@ namespace Arman
                 case global::Arman.Direction.up:
                     if (positions.Contains(new PositionInGrid(PositionInGrid.X, PositionInGrid.Y - 1)))
                     {
-                        MovableObject selectedBlock = (from block in movableObjects
+                        Entity selectedBlock = (from block in movableObjects
                                                       where block.PositionInGrid.X == PositionInGrid.X
                                                       where block.PositionInGrid.Y == PositionInGrid.Y - 1
                                                       select block)
@@ -42,7 +42,7 @@ namespace Arman
                 case global::Arman.Direction.down:
                     if (positions.Contains(new PositionInGrid(PositionInGrid.X, PositionInGrid.Y + 1)))
                     {
-                        MovableObject selectedBlock = (from block in movableObjects
+                        Entity selectedBlock = (from block in movableObjects
                                                       where block.PositionInGrid.X == PositionInGrid.X
                                                       where block.PositionInGrid.Y == PositionInGrid.Y + 1
                                                       select block)
@@ -54,7 +54,7 @@ namespace Arman
                 case global::Arman.Direction.left:
                     if (positions.Contains(new PositionInGrid(PositionInGrid.X - 1, PositionInGrid.Y)))
                     {
-                        MovableObject selectedBlock = (from block in movableObjects
+                        Entity selectedBlock = (from block in movableObjects
                                                       where block.PositionInGrid.X == PositionInGrid.X - 1
                                                       where block.PositionInGrid.Y == PositionInGrid.Y
                                                       select block)
@@ -66,7 +66,7 @@ namespace Arman
                 case global::Arman.Direction.right:
                     if (positions.Contains(new PositionInGrid(PositionInGrid.X + 1, PositionInGrid.Y)))
                     {
-                        MovableObject selectedBlock = (from block in movableObjects
+                        Entity selectedBlock = (from block in movableObjects
                                                       where block.PositionInGrid.X == PositionInGrid.X + 1
                                                       where block.PositionInGrid.Y == PositionInGrid.Y
                                                       select block)
