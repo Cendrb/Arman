@@ -30,7 +30,7 @@ namespace Arman
         public static List<MovableObject> movableObjects;
         public List<GameTarget> gameTargets;
         private KeyboardState keyboardState;
-        private Player player;
+        private List<Player> players;
         private int blockSize;
         private int detectorsForWin;
         private bool won;
@@ -47,6 +47,7 @@ namespace Arman
             won = false;
             gameTargets = new List<GameTarget>();
             potvory = new List<Potvora>();
+            players = new List<Player>();
         }
 
         /// <summary>
@@ -65,11 +66,11 @@ namespace Arman
                 {
                     CreateBlock(BlockType.nonsolid, new PositionInGrid(x, y));
                 }
-            player = new Player(game, new PositionInGrid(0), game.Content.Load<Texture2D>(@"Sprites/player"), gameArray, blockSize, gameSpeed, movableObjects, this);
+            players.Add(new Player(game, new PositionInGrid(0), game.Content.Load<Texture2D>(@"Sprites/player"), gameArray, blockSize, gameSpeed, movableObjects, this));
 
             detectorsForWin = getDetectors();
 
-            potvory.Add(new Potvora(game, new PositionInGrid(10), game.Content.Load<Texture2D>(@"Sprites/potvora"), gameArray, blockSize, gameSpeed, movableObjects));
+            potvory.Add(new Potvora(game, new PositionInGrid(10), game.Content.Load<Texture2D>(@"Sprites/potvora"), gameArray, blockSize, gameSpeed + 5, movableObjects, players));
 
             base.Initialize();
         }
@@ -93,7 +94,10 @@ namespace Arman
             {
                 mo.Update(gameTime);
             }
-            player.Update(gameTime);
+            foreach(Player player in players)
+            {
+                player.Update(gameTime);
+            }
             foreach (Potvora potvora in potvory)
             {
                 potvora.Update(gameTime);
@@ -128,8 +132,10 @@ namespace Arman
             {
                 convertRelativeCoordinatesToAbsoluteAndDraw(block);
             }
-
-            convertRelativeCoordinatesToAbsoluteAndDraw(player);
+            foreach (Player player in players)
+            {
+                convertRelativeCoordinatesToAbsoluteAndDraw(player);
+            }
 
             foreach (Potvora potvora in potvory)
                 convertRelativeCoordinatesToAbsoluteAndDraw(potvora);
@@ -167,6 +173,8 @@ namespace Arman
         }
         private void moveControl()
         {
+            Player player = players.First();
+
             keyPressTimeLimit++;
 
             if(keyboardState.IsKeyDown(Keys.Up))
@@ -184,7 +192,7 @@ namespace Arman
                 if (player.Move(Direction.left))
                     keyPressTimeLimit = 0;
             }
-            else if (keyboardState.IsKeyDown(Keys.Right)/* && keyPressTimeLimit > gameSpeed*/)
+            else if (keyboardState.IsKeyDown(Keys.Right))
             {
                 if (player.Move(Direction.right))
                     keyPressTimeLimit = 0;

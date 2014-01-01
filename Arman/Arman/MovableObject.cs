@@ -104,7 +104,7 @@ namespace Arman
             {
                 Vector2 coord = new Vector2();
                 movingDifference += (float)oneBlockSize/(float)timeForMove;
-                //odčítaní, je zde proto, aby vyrovnalo již provedený pposun metodou Move()
+                //odčítaní, je zde proto, aby vyrovnalo již provedený posun metodou Move()
                 switch(movingDirection)
                 {
                     case Direction.up:
@@ -124,11 +124,6 @@ namespace Arman
                         coord.Y = PositionInGrid.Y * oneBlockSize;
                         break;
                 }
-                if (movingDifference >= oneBlockSize)
-                {
-                    isMoving = false;
-                    movingDifference = 0;
-                }
                 return coord;
             }
             else
@@ -136,6 +131,12 @@ namespace Arman
         }
         public virtual void Update(GameTime gameTime)
         {
+            if (movingDifference >= oneBlockSize)
+            {
+                isMoving = false;
+                movingDifference = 0;
+            }
+
         }
     }
 }

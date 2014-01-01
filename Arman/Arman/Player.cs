@@ -80,12 +80,16 @@ namespace Arman
         }
         public override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
             //zabezpeèení sbírání bodíkù
             if (gameArray[PositionInGrid.X, PositionInGrid.Y].Type == BlockType.coin && !this.isMoving)
             {
                 gameArea.CreateBlock(BlockType.nonsolid, new PositionInGrid(PositionInGrid.X, PositionInGrid.Y));
             }
-            base.Update(gameTime);
+        }
+        public void Die()
+        {
+            this.PositionInGrid = new PositionInGrid(1);
         }
     }
 }

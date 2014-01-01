@@ -29,5 +29,20 @@ namespace Arman
             else
                 return 1;
         }
+        public static bool operator == (PositionInGrid pos1, PositionInGrid pos2)
+        {
+            return pos1.X == pos2.X && pos1.Y == pos2.Y;
+        }
+        public static bool operator != (PositionInGrid pos1, PositionInGrid pos2)
+        {
+            return pos1.X != pos2.X || pos1.Y != pos2.Y;
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is PositionInGrid)
+                return ((PositionInGrid)obj).X == this.X && ((PositionInGrid)obj).Y == this.Y;
+            else
+                return false;
+        }
     }
 }
