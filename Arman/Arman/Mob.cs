@@ -1,8 +1,10 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Arman_Class_Library;
 
 namespace Arman
 {
@@ -10,10 +12,12 @@ namespace Arman
     {
         private IEnumerable<Player> players;
         private IEnumerable<Mob> mobs;
+        private int movingFrequency;
+        private int seed;
 
         private int Range { get; set; }
 
-        public Mob(Arman game, PositionInGrid positionInGrid, Texture2D texture, Block[,] gameArray, int oneBlockSize, int timeForMove, List<Entity> entities, int range, int speed)
+        public Mob(Arman game, PositionInGrid positionInGrid, Texture2D texture, Block[,] gameArray, int oneBlockSize, int timeForMove, List<Entity> entities, int range, int aditionalTimeForMove, int movingFrequency)
             : base(game, positionInGrid, texture, gameArray, oneBlockSize, timeForMove, entities)
         {
             players = from entity in entities
@@ -23,16 +27,40 @@ namespace Arman
                    where entity is Mob
                    select (Mob)entity;
 
+            this.movingFrequency = movingFrequency;
+
             Range = range;
 
-            this.timeForMove -= speed;
+            this.timeForMove += aditionalTimeForMove;
+        }
+        public Mob(Arman game, PositionInGrid positionInGrid, Texture2D texture, Block[,] gameArray, int oneBlockSize, int timeForMove, List<Entity> entities, int range, int aditionalTimeForMove, int movingFrequency, int seed)
+            : base(game, positionInGrid, texture, gameArray, oneBlockSize, timeForMove, entities)
+        {
+            players = from entity in entities
+                      where entity is Player
+                      select (Player)entity;
+            mobs = from entity in entities
+                   where entity is Mob
+                   select (Mob)entity;
+
+            this.movingFrequency = movingFrequency;
+
+            Range = range;
+
+            this.seed = seed;
+
+            this.timeForMove += aditionalTimeForMove;
         }
         private void walk()
         {
             if (!tryToCatchPlayer())
             {
-                Random random = new Random();
-                switch (random.Next(0, 10))
+                Random random;
+                if(seed != 0)
+                    random = new Random(seed);
+                else
+                    random = new Random();
+                switch (random.Next(0, movingFrequency))
                 {
                     case 0:
                         if (this.Move(Direction.left))
@@ -108,6 +136,24 @@ namespace Arman
                 }
             }
             return false;
+        }
+        public override void DrawInfo(BetterSpriteBatch batch)
+        {
+            base.DrawInfo(batch);
+            Vector2 coord = GetRelativeCoordinates();
+            coord.X += 510;
+            coord.Y += 290;
+
+            if(this.Range <= 5)
+                batch.Draw(Arman.mobRangeID, coord, Color.Purple);
+            else if (this.Range <= 10)
+                batch.Draw(Arman.mobRangeID, coord, Color.Blue);
+            else if (this.Range <= 20)
+                batch.Draw(Arman.mobRangeID, coord, Color.Green);
+            else if (this.Range <= 40)
+                batch.Draw(Arman.mobRangeID, coord, Color.Yellow);
+            else if (this.Range > 40)
+                batch.Draw(Arman.mobRangeID, coord, Color.DarkRed);
         }
     } 
 }

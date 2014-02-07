@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Arman_Class_Library;
 
 namespace Arman
 {
@@ -141,11 +142,16 @@ namespace Arman
             GA.SpawnPlayer(new PositionInGrid(1), new Controls(Keys.Up, Keys.Right, Keys.Down, Keys.Left));
             GA.SpawnPlayer(new PositionInGrid(30, 20), new Controls(Keys.W, Keys.D, Keys.S, Keys.A));
             //mobs
-            GA.SpawnMob(new PositionInGrid(8), 40, 3);
-            GA.SpawnMob(new PositionInGrid(8), 40, 3);
-            GA.SpawnMob(new PositionInGrid(8), 40, 4);
-            GA.SpawnMob(new PositionInGrid(8), 5, 6);
-            GA.SpawnMob(new PositionInGrid(8), 40, 4);
+            GA.SpawnMob(new PositionInGrid(8), 30, 10, 80);
+            GA.SpawnMob(new PositionInGrid(9), 41, 100, 80);
+            GA.SpawnMob(new PositionInGrid(10), 2, 2, 80);
+            GA.SpawnMob(new PositionInGrid(20), 20, 45, 80);
+        }
+        public static void DrawTest(GameArea GA)
+        {
+            GA.CreateBlock(BlockType.movable, new PositionInGrid(3, 5));
+            GA.SpawnPlayer(new PositionInGrid(1), new Controls(Keys.Up, Keys.Right, Keys.Down, Keys.Left));
+            GA.CreateBlock(BlockType.coin, new PositionInGrid(20));
         }
     }
 }

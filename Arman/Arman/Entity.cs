@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Arman_Class_Library;
 
 namespace Arman
 {
@@ -13,7 +14,7 @@ namespace Arman
         public Texture2D Texture { get; private set; }
         public PositionInGrid PositionInGrid;
         protected Block[,] gameArray;
-        public bool isMoving;
+        protected bool isMoving;
         protected float movingDifference;
         protected Direction movingDirection;
         protected int oneBlockSize;
@@ -37,7 +38,7 @@ namespace Arman
         }
         public virtual bool Move (Direction direction)
         {
-            switch(direction)
+            switch (direction)
             {
                 case global::Arman.Direction.up:
                     if (TryMove(new PositionInGrid(PositionInGrid.X, PositionInGrid.Y - 1)))
@@ -56,7 +57,7 @@ namespace Arman
                         isMoving = true;
                         movingDirection = global::Arman.Direction.down;
 
-                         PositionInGrid.Y++;
+                        PositionInGrid.Y++;
                         return true;
                     }
                     break;
@@ -87,9 +88,9 @@ namespace Arman
         }
         public virtual bool TryMove(PositionInGrid position)
         {
-            if (isMoving)
+            if (isMoving) // nelze posouvat posouvající se
                 return false;
-            if (Blocked)
+            if (Blocked) // v případě bloku může být pohyb znemožněn
                 return false;
             if (position.X >= gameArray.GetLength(0) || position.Y >= gameArray.GetLength(1) || position.X < 0 || position.Y < 0)
                 return false;
@@ -136,6 +137,10 @@ namespace Arman
                 isMoving = false;
                 movingDifference = 0;
             }
+
+        }
+        public virtual void DrawInfo(BetterSpriteBatch batch)
+        {
 
         }
     }

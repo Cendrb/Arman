@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Arman
 {
+    
     public enum EntityType { player, mob }
     public enum BlockType { solid, nonsolid, movable, detector, coin }
     public enum Direction { up, down, left, right }
@@ -24,14 +25,21 @@ namespace Arman
     {
         GraphicsDeviceManager graphics;
         public BetterSpriteBatch spriteBatch;
-        public SpriteFont fontCourierNew, fontCourierNewBig;
+        public SpriteFont fontCourierNew, fontCourierNewBig, arial;
+        private Song musicEnjoyTheSilence;
 
         //položky okna
         private int windowHeight;
         private int windowWidth;
 
+        //mob identifiers
+        public static Texture2D mobSpeedID, mobRangeID;
+
         //grafika: sprity
         private Texture2D background;
+
+        //sounds
+        public static SoundEffect playerDeath;
 
         //lokace pozadí
         private Vector2 backgroundPosition;
@@ -47,7 +55,7 @@ namespace Arman
             windowWidth = 1920;
             windowHeight = 1080;
 
-            //nastavení rychlosti hry
+            //nastavení rychlosti pozadi
             rychlostPosunuPozadi = 0.0F;
 
             graphics = new GraphicsDeviceManager(this);
@@ -77,10 +85,6 @@ namespace Arman
             backgroundPosition = new Vector2(0, 0);
 
             base.Initialize();
-
-            //pøíprava blokù
-            //GameAreaTemplates.DrawTata(gameArea);
-            GameAreaTemplates.DrawPacman(gameArea);
         }
 
         /// <summary>
@@ -95,6 +99,17 @@ namespace Arman
             background = Content.Load<Texture2D>(@"Sprites/sipky");
             fontCourierNew = Content.Load<SpriteFont>(@"Fonts/DefaultFont");
             fontCourierNewBig = Content.Load<SpriteFont>(@"Fonts/BigCourier");
+            arial = Content.Load<SpriteFont>(@"Fonts/Arial");
+            musicEnjoyTheSilence = Content.Load<Song>(@"Music/EnjoyTheSilence");
+
+            //mob identifiers
+            mobSpeedID = Content.Load<Texture2D>(@"Sprites/MobID/bottomMobID");
+            mobRangeID = Content.Load<Texture2D>(@"Sprites/MobID/bottomMobID");
+
+            //sounds
+            playerDeath = Content.Load<SoundEffect>(@"Sounds/death");
+
+            AddToQueue(musicEnjoyTheSilence);
         }
 
         /// <summary>
@@ -138,6 +153,13 @@ namespace Arman
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public void AddToQueue(Song music)
+        {
+            // Nehraje již ta samá hudba?
+            if (MediaPlayer.Queue.ActiveSong != music)
+                MediaPlayer.Play(music);
         }
 
         private void VykresliPozadi()

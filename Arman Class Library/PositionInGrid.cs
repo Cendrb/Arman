@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Arman
+namespace Arman_Class_Library
 {
     public struct PositionInGrid : IComparable<PositionInGrid>
     {

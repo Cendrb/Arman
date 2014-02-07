@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Arman_Class_Library;
 
 
 namespace Arman
@@ -86,7 +87,6 @@ namespace Arman
         }
         public override void Update(GameTime gameTime)
         {
-            keyboardState = Keyboard.GetState();
             base.Update(gameTime);
             //zabezpeèení sbírání bodíkù
             if (gameArray[PositionInGrid.X, PositionInGrid.Y].Type == BlockType.coin && !this.isMoving)
@@ -96,25 +96,30 @@ namespace Arman
         }
         public void Die()
         {
+            Arman.playerDeath.Play();
             this.PositionInGrid = spawnPoint;
         }
         public void ReactToControls()
         {
-            if (keyboardState.IsKeyDown(controls.up))
+            if (!isMoving) //jinak to nefunguje - nestíhá reagovat
             {
-                this.Move(Direction.up);
-            }
-            else if (keyboardState.IsKeyDown(controls.down))
-            {
-                this.Move(Direction.down);
-            }
-            else if (keyboardState.IsKeyDown(controls.left))
-            {
-                this.Move(Direction.left);
-            }
-            else if (keyboardState.IsKeyDown(controls.right))
-            {
-                this.Move(Direction.right);
+                keyboardState = Keyboard.GetState();
+                if (keyboardState.IsKeyDown(controls.up))
+                {
+                    this.Move(Direction.up);
+                }
+                else if (keyboardState.IsKeyDown(controls.down))
+                {
+                    this.Move(Direction.down);
+                }
+                else if (keyboardState.IsKeyDown(controls.left))
+                {
+                    this.Move(Direction.left);
+                }
+                else if (keyboardState.IsKeyDown(controls.right))
+                {
+                    this.Move(Direction.right);
+                }
             }
         }
     }

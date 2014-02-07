@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -8,6 +9,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Arman_Class_Library;
 
 
 namespace Arman
@@ -21,7 +23,6 @@ namespace Arman
 
         private Texture2D area, wall;
 
-        private int keyPressTimeLimit;
         private int gameSpeed; // higher = slower
 
         private Block[,] gameArray;
@@ -37,7 +38,6 @@ namespace Arman
         {
             this.game = game;
 
-            keyPressTimeLimit = 0;
             gameSpeed = 10;
             blockSize = 20;
             entities = new List<Entity>();
@@ -64,6 +64,9 @@ namespace Arman
             
             detectorsForWin = getDetectors();
 
+            //temporary - template
+            GameAreaTemplates.DrawPacman(this);
+
             base.Initialize();
         }
 
@@ -75,20 +78,20 @@ namespace Arman
         {
             if (hasWon())
                 won = true;
-            foreach (DrawableGameComponent comp in gameArray)
-            {
-                comp.Update(gameTime);
-            }
-            foreach(Entity mo in entities)
-            {
-                mo.Update(gameTime);
-            }
             IEnumerable<Player> players = from entity in entities
                                           where entity is Player
                                           select (Player)entity;
-            foreach(Player player in players)
+            foreach (Player player in players)
             {
                 player.ReactToControls();
+            }
+            foreach (Entity mo in entities)
+            {
+                mo.Update(gameTime);
+            }
+            foreach (DrawableGameComponent comp in gameArray)
+            {
+                comp.Update(gameTime);
             }
             base.Update(gameTime);
         }
@@ -118,6 +121,7 @@ namespace Arman
             foreach (Entity entity in entities)
             {
                 convertRelativeCoordinatesToAbsoluteAndDraw(entity);
+                entity.DrawInfo(game.spriteBatch);
             }
             if (won)
                 Won();
@@ -169,9 +173,17 @@ namespace Arman
         {
             entities.Add(new Player(game, position, game.Content.Load<Texture2D>(@"Sprites/player"), gameArray, blockSize, gameSpeed, entities, this, controls));
         }
-        public void SpawnMob(PositionInGrid position, int range, int speed)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="range"></param>
+        /// <param name="speed"></param>
+        /// <param name="movingFrequency">higher = smaller chance - number for random generator of direction</param>
+        public void SpawnMob(PositionInGrid position, int range, int speed, int movingFrequency)
         {
-            entities.Add(new Mob(game, position, game.Content.Load<Texture2D>(@"Sprites/potvora"), gameArray, blockSize, gameSpeed, entities, range, speed));
+            int movingFreq = movingFrequency + 4; //zamezení aby potvora nechodila poøád do jednoho smìru pøi zadání nízké hodnoty
+            entities.Add(new Mob(game, position, game.Content.Load<Texture2D>(@"Sprites/potvora"), gameArray, blockSize, gameSpeed, entities, range, speed, movingFreq));
         }
         private void detectorActivated()
         {
