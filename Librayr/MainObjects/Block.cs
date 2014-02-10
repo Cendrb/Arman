@@ -15,7 +15,9 @@ namespace Arman_Class_Library
         public PositionInGrid Position { get; set; }
 
         protected Game game;
-        protected SpriteBatch spriteBatch;
+
+        private SpriteBatch spriteBatch;
+        private Texture2D texture;
 
         /// <summary>
         /// 
@@ -23,12 +25,20 @@ namespace Arman_Class_Library
         /// <param name="game">Main game</param>
         /// <param name="spriteBatch">Where to draw textures</param>
         /// <param name="position">Where it should be placed</param>
+        /// <param name="texture">What to draw on Draw() call</param>
         public Block(Game game, SpriteBatch spriteBatch, PositionInGrid position, Texture2D texture)
             : base(game)
         {
             this.game = game;
             Position = position;
             this.spriteBatch = spriteBatch;
+            this.texture = texture;
+        }
+        public override void Draw(GameTime gameTime)
+        {
+            spriteBatch.Draw(texture, StaticProperties.startingCoordinates, Color.White);
+
+            base.Draw(gameTime);
         }
     }
 }

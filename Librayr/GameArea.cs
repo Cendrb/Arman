@@ -16,10 +16,36 @@ namespace Arman_Class_Library
         public List<Coin> coins = new List<Coin>();
         public List<Entity> entities = new List<Entity>();
 
+        private DataLoader dataLoader;
+
         public GameArea(Game game, XmlDocument levelSource)
             : base(game)
         {
 
+        }
+        public override void Initialize()
+        {
+            dataLoader = new DataLoader("penis.dat");
+
+            GameData data = dataLoader.ReadData(true);
+            staticBlocks = data.Blocks;
+            entities = data.Entities;
+            coins = data.Coins;
+
+            foreach (Block block in staticBlocks)
+                base.Game.Components.Add(block);
+
+            foreach (Entity entity in entities)
+                base.Game.Components.Add(entity);
+
+            foreach (Coin coin in coins)
+                base.Game.Components.Add(coin);
+
+            base.Initialize();
+        }
+        protected override void LoadContent()
+        {
+            base.LoadContent();
         }
         public bool Move(Direction direction, Entity sender)
         {
@@ -49,7 +75,10 @@ namespace Arman_Class_Library
             #region Colision with coins
             foreach (Coin coin in coins)
                 if (coin.Position == target && sender is Player)
+                {
                     (sender as Player).PickupCoin(coin);
+                    coins.Remove(coin);
+                }
             #endregion
 
             return true;

@@ -63,9 +63,11 @@
     <Compile Include="Blocks\Detector.cs" />
     <Compile Include="Blocks\Solid.cs" />
     <Compile Include="Controls.cs" />
+    <Compile Include="DataLoader.cs" />
     <Compile Include="Entities\Mob.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="GameArea.cs" />
+    <Compile Include="GameData.cs" />
     <Compile Include="MainObjects\Block.cs" />
     <Compile Include="MainObjects\Coin.cs" />
     <Compile Include="MainObjects\Entity.cs" />
