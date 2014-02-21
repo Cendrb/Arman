@@ -17,6 +17,12 @@ namespace Arman_Class_Library
             this.X = both;
             this.Y = both;
         }
+
+        public PositionInGrid()
+        {
+            X = 0;
+            Y = 0;
+        }
         public int X;
         public int Y;
 
@@ -66,6 +72,35 @@ namespace Arman_Class_Library
                     return new PositionInGrid(this.X + 1, this.Y);
             }
             throw new InvalidOperationException("Jak se ti to povedlo!?");
+        }
+        public PositionInGrid ApplyDirection(Direction direction, int difference)
+        {
+            switch (direction)
+            {
+                case global::Arman_Class_Library.Direction.up:
+                    return new PositionInGrid(this.X, this.Y - difference);
+
+                case global::Arman_Class_Library.Direction.down:
+                    return new PositionInGrid(this.X, this.Y + difference);
+
+                case global::Arman_Class_Library.Direction.left:
+                    return new PositionInGrid(this.X - difference, this.Y);
+
+                case global::Arman_Class_Library.Direction.right:
+                    return new PositionInGrid(this.X + difference, this.Y);
+            }
+            throw new InvalidOperationException("Jak se ti to povedlo!?");
+        }
+        public override string ToString()
+        {
+            return String.Join(",", X, Y);
+        }
+        public static PositionInGrid Parse(string text)
+        {
+            string[] values = text.Split(',');
+            int x = int.Parse(values[0]);
+            int y = int.Parse(values[1]);
+            return new PositionInGrid(x, y);
         }
     }
 }

@@ -52,8 +52,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sprites\Blocks\wall.png">
-      <Name>wall</Name>
+    <Compile Include="Sprites\Blocks\solid.png">
+      <Name>solid</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -73,21 +73,21 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sprites\Blocks\nonsolid.png">
-      <Name>nonsolid</Name>
+    <Compile Include="Sprites\Blocks\air.png">
+      <Name>air</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sprites\player.png">
+    <Compile Include="Sprites\Entities\player.png">
       <Name>player</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sprites\Blocks\movable.png">
+    <Compile Include="Sprites\Entities\movable.png">
       <Name>movable</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -115,8 +115,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sprites\potvora.png">
-      <Name>potvora</Name>
+    <Compile Include="Sprites\Entities\mob.png">
+      <Name>mob</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

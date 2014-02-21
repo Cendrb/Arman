@@ -5,17 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 
 namespace Arman_Class_Library
 {
+    [Serializable]
     public abstract class Block : Microsoft.Xna.Framework.DrawableGameComponent
     {
 
         public PositionInGrid Position { get; set; }
 
         protected Game game;
-
         private SpriteBatch spriteBatch;
         private Texture2D texture;
 
@@ -36,9 +37,21 @@ namespace Arman_Class_Library
         }
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Draw(texture, StaticProperties.startingCoordinates, Color.White);
+            Vector2 position = getAbsoluteCoordinates();
+            spriteBatch.Begin();
+            spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, GameArea.OneBlockSize, GameArea.OneBlockSize), Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+        private Vector2 getRelativeCoordinates()
+        {
+            return new Vector2(Position.X * GameArea.OneBlockSize, Position.Y * GameArea.OneBlockSize);
+        }
+        private Vector2 getAbsoluteCoordinates()
+        {
+            Vector2 position = getRelativeCoordinates();
+            return new Vector2(position.X + GameArea.StartingCoordinates.X, position.Y + GameArea.StartingCoordinates.Y);
         }
     }
 }

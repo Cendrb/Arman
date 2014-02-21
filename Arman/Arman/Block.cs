@@ -22,7 +22,7 @@ namespace Arman
         private Texture2D texture;
         private Arman game;
         private float oneBlockSize;
-        public PositionInGrid Position { get; set; }
+        public PositionInGrid Position { get; private set; }
 
         public Block(Arman game, BlockType type, PositionInGrid position, int oneBlockSize)
             : base(game)

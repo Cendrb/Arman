@@ -14,15 +14,5 @@ namespace Arman_Class_Library
         {
 
         }
-        protected override void LoadContent()
-        {
-            base.LoadContent();
-        }
-        public override void Draw(GameTime gameTime)
-        {
-
-
-            base.Draw(gameTime);
-        }
     }
 }

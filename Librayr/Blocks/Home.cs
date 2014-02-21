@@ -7,15 +7,13 @@ using System.Text;
 
 namespace Arman_Class_Library
 {
-    [Serializable]
-    public class Coin : Block
+    public class Home : Block
     {
-        public int Value { get; private set; }
-
-        public Coin(Game game, SpriteBatch spriteBatch, PositionInGrid position, Texture2D texture, int value)
+        public bool PlayerInside { get; set; }
+        public Home(Game game, SpriteBatch spriteBatch, PositionInGrid position, Texture2D texture)
             : base(game, spriteBatch, position, texture)
         {
-            Value = value;
+
         }
     }
 }
