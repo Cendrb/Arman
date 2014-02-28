@@ -12,8 +12,8 @@ namespace Arman_Class_Library
     {
         public int Value { get; private set; }
 
-        public Coin(Game game, SpriteBatch spriteBatch, PositionInGrid position, Texture2D texture, int value)
-            : base(game, spriteBatch, position, texture)
+        public Coin(Game game, PositionInGrid position, string texture, GameDataTools tools, int value)
+            : base(game, position, texture, tools)
         {
             Value = value;
         }

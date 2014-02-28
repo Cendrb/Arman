@@ -10,8 +10,8 @@ namespace Arman_Class_Library
     public class Home : Block
     {
         public bool PlayerInside { get; set; }
-        public Home(Game game, SpriteBatch spriteBatch, PositionInGrid position, Texture2D texture)
-            : base(game, spriteBatch, position, texture)
+        public Home(Game game, PositionInGrid position, string texture, GameDataTools tools)
+            : base(game, position, texture, tools)
         {
 
         }

@@ -9,7 +9,7 @@ using System.Xml;
 
 namespace Arman_Class_Library
 {
-    public enum TryMoveResult { free, blockedByMovableEntity, blocked}
+    public enum TryMoveResult { free, blockedByMovableEntity, blocked }
     public enum Direction { up, down, left, right }
 
     public class GameArea : DrawableGameComponent
@@ -52,121 +52,116 @@ namespace Arman_Class_Library
 
         private DataLoader dataLoader;
         private DataForLoader dataForLoader;
+        private GameData data;
+        private GameDataTools tools;
         private string levelSourcePath;
-        private Random mobAIRandom;
+        public static Random mobAIRandom;
+        private SpriteBatch spriteBatch;
+        private SpriteFont defaultFont;
 
-        public GameArea(GameWithSpriteBatch game, string levelSource, DataForLoader data)
+        // Objectives
+        private bool detectorsActivated = false;
+        private bool coinsCollected = false;
+        private bool playersHome = false;
+        private bool won = false;
+
+        public GameArea(Game game, string levelSource, DataForLoader dataForLoader)
             : base(game)
         {
-            dataForLoader = data;
+            this.dataForLoader = dataForLoader;
             levelSourcePath = levelSource;
         }
         public override void Initialize()
         {
             mobAIRandom = new Random();
 
-            dataForLoader.Move = Move;
-            dataLoader = new DataLoader(levelSourcePath, Game, (Game as GameWithSpriteBatch).SpriteBatch, dataForLoader);
+            tools = new GameDataTools();
+            dataLoader = new DataLoader(levelSourcePath, Game, dataForLoader, tools);
 
-            GameData data = dataLoader.ReadData(true);
+            data = dataLoader.ReadData(true);
+            tools.Data = data;
+            tools.Game = Game;
+            tools.Initialize();
+
             staticBlocks = data.Blocks;
             entities = data.Entities;
             coins = data.Coins;
-            Speed = data.Speed;
             OneBlockSize = data.OneBlockSize;
+            Speed = data.Speed;
 
             foreach (Block block in staticBlocks)
-                base.Game.Components.Add(block);
-
-            foreach (Entity entity in entities)
-                base.Game.Components.Add(entity);
+                Game.Components.Add(block);
 
             foreach (Coin coin in coins)
-                base.Game.Components.Add(coin);
+                Game.Components.Add(coin);
+
+            foreach (Entity entity in entities)
+                Game.Components.Add(entity);
 
             base.Initialize();
         }
+        protected override void LoadContent()
+        {
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            defaultFont = Game.Content.Load<SpriteFont>(@"Fonts/BigCourier");
+            base.LoadContent();
+        }
         public override void Update(GameTime gameTime)
         {
-            Entity eToRemove = null;
-            foreach(Entity entity in entities)
+            if (data.Objectives.ActivateDetectors && !detectorsActivated)
+            {
+                int activatedDetectors = 0;
+                foreach (Detector detector in tools.Detectors)
+                    if (detector.IsPartOfObjectives && detector.Activated)
+                        activatedDetectors++;
+                if (activatedDetectors == tools.Detectors.Count)
+                    detectorsActivated = true;
+            }
+            if (data.Objectives.CollectAllCoins && !coinsCollected)
+            {
+                if (data.Coins.Count == 0)
+                    coinsCollected = true;
+            }
+            if (data.Objectives.GetHome && !playersHome)
+            {
+                int playersAtHome = 0;
+                foreach (Player player in tools.Players)
+                    if (player.IsHome)
+                        playersAtHome++;
+                if (playersAtHome == tools.Detectors.Count)
+                    playersHome = true;
+            }
+            int objectivesCompleted = 0;
+            if (detectorsActivated)
+                objectivesCompleted++;
+            if (playersHome)
+                objectivesCompleted++;
+            if (coinsCollected)
+                objectivesCompleted++;
+            if (objectivesCompleted == data.Objectives.Count)
+                won = true;
+
+            foreach (Entity entity in entities.ToList())
             {
                 if (entity is Player && (entity as Player).IsDead)
                 {
-                    eToRemove = entity;
+                    entities.Remove(entity);
+                    Game.Components.Remove(entity);
                 }
-            }
-            if (eToRemove != null)
-            {
-                entities.Remove(eToRemove);
-                Game.Components.Remove(eToRemove);
             }
             base.Update(gameTime);
         }
-        public bool Move(Direction direction, List<Entity> senders)
+        public override void Draw(GameTime gameTime)
         {
-            // Prepare local variables
-            Entity originalSender = senders.Last();
-            PositionInGrid target = originalSender.Position.ApplyDirection(direction);
-
-            // Most important IF :)
-            if (originalSender.IsMoving)
-                return false;
-
-            #region Colision with static blocks
-            foreach (Block block in staticBlocks)
-            {
-                if (target == block.Position && block is Solid)
-                    return false;
-                if (target == block.Position && block is Detector && originalSender is MovableBlock)
-                    (block as Detector).TryActivate(originalSender as MovableBlock);
-            }
-            #endregion
-
-            #region Colision with entities
-            foreach (Entity entity in entities)
-            {
-                // Killing players
-                if (target == entity.Position && originalSender is Player && entity is Mob)
-                {
-                    (originalSender as Player).Die(entity as Mob);
-                    break;
-                }
-                if (target == entity.Position && entity is Player && originalSender is Mob)
-                {
-                    (entity as Player).Die(originalSender as Mob);
-                    break;
-                }
-                // Basic pushing
-                if (target == entity.Position && entity.CanBePushed && originalSender.CanPush)
-                {
-                    if (!entity.Move(direction, senders))
-                        return false;
-                }
-                else
-                {
-                    if (target == entity.Position && (!originalSender.CanPush || !entity.CanBePushed))
-                        return false;
-                }
-            }
-            #endregion
-
-            #region Colision with coins
-            Coin coinToRemove = null;
-            foreach (Coin coin in coins)
-                if (coin.Position == target && originalSender is Player)
-                {
-                    (originalSender as Player).PickupCoin(coin);
-                    coinToRemove = coin;
-                }
-            if (coinToRemove != null)
-            {
-                coins.Remove(coinToRemove);
-                Game.Components.Remove(coinToRemove);
-            }
-            #endregion
-
-            return true;
+            base.Draw(gameTime);
+            if (won)
+                Won();
+        }
+        private void Won()
+        {
+            spriteBatch.Begin();
+            spriteBatch.DrawString(defaultFont, "You WON!!!", new Vector2(600, 600), Color.Red);
+            spriteBatch.End();
         }
     }
 }

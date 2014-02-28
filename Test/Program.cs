@@ -11,6 +11,8 @@ namespace Test
     {
         static void Main(string[] args)
         {
+            if (null is Object)
+                Console.WriteLine("ROTOTO!");
             Console.WriteLine(Color.White.PackedValue);
             Console.ReadKey(true);
         }

@@ -8,24 +8,19 @@ namespace Arman_Class_Library
 {
     public class DataForLoader
     {
-        public Action<Mob> Wander { get; set; }
-        public Func<Mob, bool> TryToCatchPlayer { get; set; }
-        public Func<Direction, List<Entity>, bool> Move { get; set; }
-        public Action<Entity> PostMoveControl { get; set; }
+        public string PlayerTexture { get; private set; }
+        public string MobTexture { get; private set; }
+        public string MovableBlockTexture { get; private set; }
 
-        public Texture2D PlayerTexture { get; private set; }
-        public Texture2D MobTexture { get; private set; }
-        public Texture2D MovableBlockTexture { get; private set; }
+        public string SolidBlockTexture { get; private set; }
+        public string AirBlockTexture { get; private set; }
+        public string DetectorTexture { get; private set; }
+        public string HomeTexture { get; private set; }
 
-        public Texture2D SolidBlockTexture { get; private set; }
-        public Texture2D AirBlockTexture { get; private set; }
-        public Texture2D DetectorTexture { get; private set; }
-        public Texture2D HomeTexture { get; private set; }
-
-        public Texture2D CoinTexture { get; private set; }
+        public string CoinTexture { get; private set; }
 
 
-        public DataForLoader(Texture2D playerTexture, Texture2D mobTexture, Texture2D mBlockTexture, Texture2D solidBlockTexture, Texture2D airBlockTexture, Texture2D detectorTexture, Texture2D coinTexture, Texture2D homeTexture)
+        public DataForLoader(string playerTexture, string mobTexture, string mBlockTexture, string solidBlockTexture, string airBlockTexture, string detectorTexture, string coinTexture, string homeTexture)
         {
 
             PlayerTexture = playerTexture;

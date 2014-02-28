@@ -17,17 +17,16 @@ namespace Arman_Class_Library
 
         GameData data;
 
-        private SpriteBatch spriteBatch;
         private Game game;
         private DataForLoader app;
+        private GameDataTools tools;
 
-        public DataLoader(string path, Game game, SpriteBatch spriteBatch, DataForLoader app)
+        public DataLoader(string path, Game game, DataForLoader app, GameDataTools tools)
         {
             document = new XmlDocument();
-            
-            this.Path = path;
 
-            this.spriteBatch = spriteBatch;
+            this.Path = path;
+            this.tools = tools;
             this.game = game;
             this.app = app;
 
@@ -71,23 +70,6 @@ namespace Arman_Class_Library
                 XmlElement homesElement = (XmlElement)blocksElement.GetElementsByTagName("Homes")[0];
 
                 // Entities load
-                #region Mobs
-                foreach (XmlNode mobNode in mobsElement)
-                {
-                    XmlElement mobElement = mobNode as XmlElement;
-
-                    string name = mobElement.GetAttribute("Name");
-                    int x = int.Parse(mobElement.GetAttribute("XCoord"));
-                    int y = int.Parse(mobElement.GetAttribute("YCoord"));
-                    bool canPush = bool.Parse(mobElement.GetAttribute("CanPush"));
-                    bool canBePushed = bool.Parse(mobElement.GetAttribute("CanBePushed"));
-                    int speed = int.Parse(mobElement.GetAttribute("Speed"));
-                    int vision = int.Parse(mobElement.GetAttribute("Vision"));
-                    int moveRatio = int.Parse(mobElement.GetAttribute("MoveRatio"));
-
-                    data.Entities.Add(new Mob(game, spriteBatch, new PositionInGrid(x, y), app.MobTexture, canPush, canBePushed, name, app.Move, speed, vision, moveRatio, app.Wander, app.TryToCatchPlayer, app.PostMoveControl));
-                }
-                #endregion
                 #region Players
                 foreach (XmlNode playerNode in playersElement)
                 {
@@ -103,7 +85,24 @@ namespace Arman_Class_Library
                     bool invulnerable = bool.Parse(playerElement.GetAttribute("Invulnerable"));
                     Controls controls = Controls.Parse(playerElement.GetAttribute("Controls"));
 
-                    data.Entities.Add(new Player(game, spriteBatch, new PositionInGrid(x, y), app.PlayerTexture, canPush, canBePushed, name, app.Move, speed, controls, lives, invulnerable, app.PostMoveControl));
+                    data.Entities.Add(new Player(game, new PositionInGrid(x, y), app.PlayerTexture, tools, canPush, canBePushed, name, speed, controls, lives, invulnerable));
+                }
+                #endregion
+                #region Mobs
+                foreach (XmlNode mobNode in mobsElement)
+                {
+                    XmlElement mobElement = mobNode as XmlElement;
+
+                    string name = mobElement.GetAttribute("Name");
+                    int x = int.Parse(mobElement.GetAttribute("XCoord"));
+                    int y = int.Parse(mobElement.GetAttribute("YCoord"));
+                    bool canPush = bool.Parse(mobElement.GetAttribute("CanPush"));
+                    bool canBePushed = bool.Parse(mobElement.GetAttribute("CanBePushed"));
+                    int speed = int.Parse(mobElement.GetAttribute("Speed"));
+                    int vision = int.Parse(mobElement.GetAttribute("Vision"));
+                    int moveRatio = int.Parse(mobElement.GetAttribute("MoveRatio"));
+
+                    data.Entities.Add(new Mob(game, new PositionInGrid(x, y), app.MobTexture, tools, canPush, canBePushed, name, speed, vision, moveRatio));
                 }
                 #endregion
                 #region Movable Blocks
@@ -118,7 +117,7 @@ namespace Arman_Class_Library
                     bool canBePushed = bool.Parse(movableBlockElement.GetAttribute("CanBePushed"));
                     Color color = new Color(int.Parse(movableBlockElement.GetAttribute("R")), int.Parse(movableBlockElement.GetAttribute("G")), int.Parse(movableBlockElement.GetAttribute("B")), int.Parse(movableBlockElement.GetAttribute("A")));
 
-                    data.Entities.Add(new MovableBlock(game, spriteBatch, new PositionInGrid(x, y), app.MovableBlockTexture, canPush, canBePushed, name, app.Move, color, app.PostMoveControl));
+                    data.Entities.Add(new MovableBlock(game, new PositionInGrid(x, y), app.MovableBlockTexture, tools, canPush, canBePushed, name, color));
                 }
                 #endregion
 
@@ -131,7 +130,7 @@ namespace Arman_Class_Library
                     int x = int.Parse(solidBlockElement.GetAttribute("XCoord"));
                     int y = int.Parse(solidBlockElement.GetAttribute("YCoord"));
 
-                    data.Blocks.Add(new Solid(game, spriteBatch, new PositionInGrid(x, y), app.SolidBlockTexture));
+                    data.Blocks.Add(new Solid(game, new PositionInGrid(x, y), app.SolidBlockTexture, tools));
                 }
                 #endregion
                 #region Air Blocks
@@ -142,7 +141,7 @@ namespace Arman_Class_Library
                     int x = int.Parse(airBlockElement.GetAttribute("XCoord"));
                     int y = int.Parse(airBlockElement.GetAttribute("YCoord"));
 
-                    data.Blocks.Add(new Air(game, spriteBatch, new PositionInGrid(x, y), app.AirBlockTexture));
+                    data.Blocks.Add(new Air(game, new PositionInGrid(x, y), app.AirBlockTexture, tools));
                 }
                 #endregion
                 #region Detectors
@@ -159,9 +158,9 @@ namespace Arman_Class_Library
                     Color xnacolor = new Color(int.Parse(detectorElement.GetAttribute("R")), int.Parse(detectorElement.GetAttribute("G")), int.Parse(detectorElement.GetAttribute("B")), int.Parse(detectorElement.GetAttribute("A")));
 
                     if (positionOfBlockToRemove.X == -1 || positionOfBlockToRemove.Y == -1)
-                        data.Blocks.Add(new Detector(game, spriteBatch, new PositionInGrid(x, y), app.DetectorTexture, xnacolor, blockMovableBlockOnApproach, addToObjectives));
+                        data.Blocks.Add(new Detector(game, new PositionInGrid(x, y), app.DetectorTexture, tools, xnacolor, blockMovableBlockOnApproach, addToObjectives));
                     else
-                        data.Blocks.Add(new Detector(game, spriteBatch, new PositionInGrid(x, y), app.DetectorTexture, xnacolor, blockMovableBlockOnApproach, addToObjectives, positionOfBlockToRemove));
+                        data.Blocks.Add(new Detector(game, new PositionInGrid(x, y), app.DetectorTexture, tools, xnacolor, blockMovableBlockOnApproach, addToObjectives, positionOfBlockToRemove));
                 }
                 #endregion
                 #region Homes
@@ -172,7 +171,7 @@ namespace Arman_Class_Library
                     int x = int.Parse(homeElement.GetAttribute("XCoord"));
                     int y = int.Parse(homeElement.GetAttribute("YCoord"));
 
-                    data.Blocks.Add(new Home(game, spriteBatch, new PositionInGrid(x, y), app.HomeTexture));
+                    data.Blocks.Add(new Home(game, new PositionInGrid(x, y), app.HomeTexture, tools));
                 }
                 #endregion
 
@@ -186,7 +185,7 @@ namespace Arman_Class_Library
                     int y = int.Parse(coinElement.GetAttribute("YCoord"));
                     int value = int.Parse(coinElement.GetAttribute("Value"));
 
-                    data.Coins.Add(new Coin(game, spriteBatch, new PositionInGrid(x, y), app.CoinTexture, value));
+                    data.Coins.Add(new Coin(game, new PositionInGrid(x, y), app.CoinTexture, tools, value));
                 }
                 #endregion
 
@@ -206,7 +205,7 @@ namespace Arman_Class_Library
                 data.Objectives.GetHome = bool.Parse(objectives.GetAttribute("GetHome"));
                 #endregion
             }
-            catch(Exception e)
+            catch (XmlException e)
             {
                 MessageBox.Show(String.Format("Game save ({0}) is corrupted and cannot be read. - {1}", Path, e.Message), "Loading error");
             }
@@ -412,7 +411,7 @@ namespace Arman_Class_Library
                 document.AppendChild(arman);
                 document.Save(Path);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 MessageBox.Show(String.Format("Game file ({0}) could not be saved. - {1}", Path, e.Message), "Save error");
             }

@@ -12,8 +12,6 @@ namespace Arman_Class_Library
         public List<Entity> Entities { get; private set; }
         public List<Coin> Coins { get; private set; }
 
-        public Dictionary<PositionInGrid, PositionInGrid> detectorsTargets;
-
         public int XGameArea { get; set; }
         public int YGameArea { get; set; }
         public string Name { get; set; }

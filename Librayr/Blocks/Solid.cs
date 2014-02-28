@@ -9,8 +9,8 @@ namespace Arman_Class_Library
 {
     public class Solid : Block
     {
-        public Solid(Game game, SpriteBatch spriteBatch, PositionInGrid position, Texture2D texture)
-            : base(game, spriteBatch, position, texture)
+        public Solid(Game game, PositionInGrid position, string texture, GameDataTools tools)
+            : base(game, position, texture, tools)
         {
 
         }

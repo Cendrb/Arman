@@ -75,10 +75,10 @@
     <Compile Include="GameArea.cs" />
     <Compile Include="GameData.cs" />
     <Compile Include="GameDataTools.cs" />
-    <Compile Include="GameWithSpriteBatch.cs" />
     <Compile Include="MainObjects\Block.cs" />
     <Compile Include="MainObjects\Coin.cs" />
     <Compile Include="MainObjects\Entity.cs" />
+    <Compile Include="MainObjects\GameElement.cs" />
     <Compile Include="Objectives.cs" />
     <Compile Include="PositionInGrid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

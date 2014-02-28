@@ -16,15 +16,19 @@ namespace Arman_Class_Library
         public bool IsDead { get; private set; }
         public Controls Controls { get; private set; }
         public bool IsInvulnerable { get; private set; }
+        public bool IsHome { get; private set; }
 
-        public Player(Game game, SpriteBatch spriteBatch, PositionInGrid position, Texture2D texture, bool canPush, bool canBePushed, string name, Func<Direction, List<Entity>, bool> move, float speed, Controls controls, int lives, bool isInvulnerable)
-            : base(game, spriteBatch, position, texture, canPush, canBePushed, name, move, speed)
+        private int invulnerableAfterRespawnTimer;
+
+        public Player(Game game, PositionInGrid position, string texture, GameDataTools tools, bool canPush, bool canBePushed, string name, float speed, Controls controls, int lives, bool isInvulnerable)
+            : base(game, position, texture, tools, canPush, canBePushed, name, speed)
         {
             IsInvulnerable = isInvulnerable;
             Score = 0;
             SpawnPoint = position;
             this.Controls = controls;
             Lives = lives;
+            invulnerableAfterRespawnTimer = 0;
         }
         public void Die(Mob killer)
         {
@@ -38,12 +42,16 @@ namespace Arman_Class_Library
                 else
                 {
                     Respawn();
+                    IsInvulnerable = true;
+                    invulnerableAfterRespawnTimer = 180;
                 }
             }
         }
         public void PickupCoin(Coin coin)
         {
             Score += coin.Value;
+            tools.Data.Coins.Remove(coin);
+            Game.Components.Remove(coin);
         }
         public void Respawn()
         {
@@ -51,8 +59,22 @@ namespace Arman_Class_Library
         }
         public override void Update(GameTime gameTime)
         {
+            if (invulnerableAfterRespawnTimer > 0)
+                invulnerableAfterRespawnTimer--;
+            if (invulnerableAfterRespawnTimer == 0)
+                IsInvulnerable = false;
             if (!IsMoving)
                 ReactToControls(Keyboard.GetState());
+            Coin coin = tools.GetCoinAt(Position);
+            if(coin != null)
+            {
+                PickupCoin(coin);
+            }
+            Block block = tools.GetBlockAt(Position);
+            if(block is Home)
+                IsHome = true;
+            else
+                IsHome = false;
             base.Update(gameTime);
         }
         public void ReactToControls(KeyboardState keyboardState)

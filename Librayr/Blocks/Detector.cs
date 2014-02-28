@@ -15,44 +15,58 @@ namespace Arman_Class_Library
         public bool IsPartOfObjectives { get; private set; }
         public PositionInGrid AffectedPosition { get; private set; }
 
-        public Detector(Game game, SpriteBatch spriteBatch, PositionInGrid position, Texture2D texture, Color lockColor, bool blockMovableBlockOnApproach, bool isPartOfObjectives)
-            : base(game, spriteBatch, position, texture)
+        private bool blockRemoved = false;
+
+        public Detector(Game game, PositionInGrid position, string texture, GameDataTools tools, Color lockColor, bool blockMovableBlockOnApproach, bool isPartOfObjectives)
+            : base(game, position, texture, tools)
         {
             BlockMovableBlockOnApproach = blockMovableBlockOnApproach;
             LockColor = lockColor;
             IsPartOfObjectives = isPartOfObjectives;
             AffectedPosition = new PositionInGrid(-1);
         }
-        public Detector(Game game, SpriteBatch spriteBatch, PositionInGrid position, Texture2D texture, Color lockColor, bool blockMovableBlockOnApproach, bool isPartOfObjectives, PositionInGrid affectedPosition)
-            : base(game, spriteBatch, position, texture)
+        public Detector(Game game, PositionInGrid position, string texture, GameDataTools tools, Color lockColor, bool blockMovableBlockOnApproach, bool isPartOfObjectives, PositionInGrid affectedPosition)
+            : base(game, position, texture, tools)
         {
             BlockMovableBlockOnApproach = blockMovableBlockOnApproach;
             LockColor = lockColor;
             IsPartOfObjectives = isPartOfObjectives;
             AffectedPosition = affectedPosition;
         }
-        protected override void LoadContent()
+        public override void Update(GameTime gameTime)
         {
-            base.LoadContent();
+            Entity entity = tools.GetEntityAt(Position);
+            if (entity is MovableBlock)
+            {
+                if ((entity as MovableBlock).KeyColor == Color.White || LockColor == Color.White || (entity as MovableBlock).KeyColor == LockColor)
+                {
+                    Activated = true;
+                    (entity as MovableBlock).CanBePushed = !BlockMovableBlockOnApproach;
+                }
+            }
+            else
+            {
+                Activated = false;
+            }
+            if(Activated && AffectedPosition.X != -1 && !blockRemoved)
+            {
+                Block affectedBlock = tools.GetBlockAt(AffectedPosition);
+                if(affectedBlock != null)
+                {
+                    Air air = new Air(game, AffectedPosition, @"Sprites/Blocks/air", tools);
+                    tools.Data.Blocks.Remove(affectedBlock);
+                    tools.Data.Blocks.Add(air);
+                    Game.Components.Remove(affectedBlock);
+                    Game.Components.Insert(1, air);
+                    blockRemoved = true;
+                }
+            }
+            base.Update(gameTime);
         }
         public override void Draw(GameTime gameTime)
         {
+            // TODO: vykreslování barevné tečky podle barvy zámku
             base.Draw(gameTime);
-        }
-        public bool TryActivate(MovableBlock activator)
-        {
-            if (LockColor == Color.White || activator.KeyColor == Color.White)
-            {
-                activator.CanBePushed = BlockMovableBlockOnApproach;
-                return true;
-            }
-            else if (LockColor == activator.KeyColor)
-            {
-                activator.CanBePushed = !BlockMovableBlockOnApproach;
-                return true;
-            }
-            else
-                return false;
         }
     }
 }

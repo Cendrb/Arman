@@ -10,18 +10,26 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Arman_Class_Library;
 using System.Xml;
+using System.IO;
 
 namespace New_Arman
 {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Arman : GameWithSpriteBatch
+    public class Arman : Game
     {
-        public override SpriteBatch SpriteBatch { get; protected set; }
+        // fPS
+        int _total_frames = 0;
+        float _elapsed_time = 0.0f;
+        int _fps = 0;
 
+        private SpriteBatch spriteBatch;
+
+        SpriteFont arial;
         GraphicsDeviceManager graphics;
         GameArea area;
+        DataForLoader appData;
 
         private string path;
 
@@ -39,11 +47,28 @@ namespace New_Arman
         /// </summary>
         protected override void Initialize()
         {
-            path = @"c:\Users\Cendrb\SkyDrive\Dokumenty\Main.alvl";
+            if (!Directory.Exists(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Arman")))
+                Directory.CreateDirectory(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Arman"));
+            path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Arman", "level.alvl");
 
             graphics.PreferredBackBufferHeight = 800;
             graphics.PreferredBackBufferWidth = 1600;
             graphics.ApplyChanges();
+
+            string playerTex, mobTex, mBlockTex, solidBlockTex, airBlockTex, detectorTex, coinTex, homeTex;
+            playerTex = @"Sprites/Entities/player";
+            mobTex = @"Sprites/Entities/mob";
+            mBlockTex = @"Sprites/Entities/movable";
+            solidBlockTex = @"Sprites/Blocks/solid";
+            airBlockTex = @"Sprites/Blocks/air";
+            detectorTex = @"Sprites/Blocks/detector";
+            coinTex = @"Sprites/Blocks/coin";
+            homeTex = @"Sprites/Blocks/detector"; // TERXTURE!
+
+            appData = new DataForLoader(playerTex, mobTex, mBlockTex, solidBlockTex, airBlockTex, detectorTex, coinTex, homeTex);
+
+            area = new GameArea(this, path, appData);
+            Components.Add(area);
 
             base.Initialize();
         }
@@ -55,22 +80,11 @@ namespace New_Arman
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            SpriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Texture2D playerTex, mobTex, mBlockTex, solidBlockTex, airBlockTex, detectorTex, coinTex, homeTex;
-            playerTex = Content.Load<Texture2D>(@"Sprites/Entities/player");
-            mobTex = Content.Load<Texture2D>(@"Sprites/Entities/mob");
-            mBlockTex = Content.Load<Texture2D>(@"Sprites/Entities/movable");
-            solidBlockTex = Content.Load<Texture2D>(@"Sprites/Blocks/solid");
-            airBlockTex = Content.Load<Texture2D>(@"Sprites/Blocks/air");
-            detectorTex = Content.Load<Texture2D>(@"Sprites/Blocks/detector");
-            coinTex = Content.Load<Texture2D>(@"Sprites/Blocks/coin");
-            homeTex = Content.Load<Texture2D>(@"Sprites/Blocks/detector"); // TERXTURE!
+            arial = Content.Load<SpriteFont>(@"Fonts/Arial");
 
-            DataForLoader appData = new DataForLoader(playerTex, mobTex, mBlockTex, solidBlockTex, airBlockTex, detectorTex, coinTex, homeTex);
-            area = new GameArea(this, path, appData);
-            area.Initialize();
-            Components.Add(area);
+            base.LoadContent();
         }
 
         /// <summary>
@@ -89,6 +103,17 @@ namespace New_Arman
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            _total_frames++;
+            // Update
+            _elapsed_time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+ 
+            // 1 Second has passed
+            if (_elapsed_time >= 1000.0f)
+            {
+                _fps = _total_frames;
+                _total_frames = 0;
+                _elapsed_time = 0;
+            }
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -106,9 +131,14 @@ namespace New_Arman
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
-
             base.Draw(gameTime);
+
+            spriteBatch.Begin();
+            spriteBatch.DrawString(arial, string.Format("FPS={0}", _fps),
+                new Vector2(20.0f, 20.0f), Color.White);
+            spriteBatch.End();
+
+            
         }
     }
 }

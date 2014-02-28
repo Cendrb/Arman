@@ -10,6 +10,24 @@ namespace Arman_Class_Library
         public bool CollectAllCoins { get; set; }
         public bool GetHome { get; set; }
         public bool ActivateDetectors { get; set; }
+        public int Count
+        {
+            get
+            {
+                int obj = 0;
+                if (CollectAllCoins)
+                    obj++;
+                if (GetHome)
+                    obj++;
+                if (ActivateDetectors)
+                    obj++;
+                return obj;
+            }
+            private set
+            {
+
+            }
+        }
 
         public Objectives Clone()
         {

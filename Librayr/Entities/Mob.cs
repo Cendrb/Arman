@@ -14,32 +14,92 @@ namespace Arman_Class_Library
 
         private float movePause;
 
-        private Action<Mob> wander;
-        private Func<Mob, bool> tryToCatchPlayer;
-
-        public Mob(Game game, SpriteBatch spriteBatch, PositionInGrid position, Texture2D texture, bool canPush, bool canBePushed, string name, Func<Direction, List<Entity>, bool> move, float speed, int vision, int moveRatio)
-            : base(game, spriteBatch, position, texture, canPush, canBePushed, name, move, speed)
+        public Mob(Game game, PositionInGrid position, string texture, GameDataTools tools, bool canPush, bool canBePushed, string name, float speed, int vision, int moveRatio)
+            : base(game, position, texture, tools, canPush, canBePushed, name, speed)
         {
             Vision = vision;
             MoveRatio = moveRatio;
-            this.wander = wander;
             movePause = 0;
-            this.tryToCatchPlayer = tryToCatchPlayer;
         }
         public override void Update(GameTime gameTime)
         {
-            if (!IsMoving)
+            Entity entity = tools.GetEntityAt(Position);
+            if (entity is Player)
             {
-                if (!tryToCatchPlayer(this))
-                    movePause += GameArea.OneBlockSize / (GameArea.TimeForMove - Speed);
+                (entity as Player).Die(this);
+            }
+            else
+            {
+                if (!IsMoving)
+                {
+                    if (!tryToCatchPlayer())
+                        movePause += GameArea.OneBlockSize / (GameArea.TimeForMove - Speed);
                     if (movePause > GameArea.OneBlockSize)
                     {
                         movePause = 0;
-                        wander(this);
+                        wander();
                     }
+                }
             }
 
             base.Update(gameTime);
+        }
+        private bool tryToCatchPlayer()
+        {
+            for (int x = Vision; x > 0; x--)
+            {
+                if (tools.GetEntityAt(Position.ApplyDirection(Direction.up, x)) is Player)
+                {
+                    Move(Direction.up);
+                    return true;
+                }
+                if (tools.GetEntityAt(Position.ApplyDirection(Direction.down, x)) is Player)
+                {
+                    Move(Direction.down);
+                    return true;
+                }
+                if (tools.GetEntityAt(Position.ApplyDirection(Direction.left, x)) is Player)
+                {
+                    Move(Direction.left);
+                    return true;
+                }
+                if (tools.GetEntityAt(Position.ApplyDirection(Direction.right, x)) is Player)
+                {
+                    Move(Direction.right);
+                    return true;
+                }
+            }
+            return false;
+        }
+        private void wander()
+        {
+            if (!tryToCatchPlayer())
+            {
+                if (MoveRatio > 0)
+                    switch (GameArea.mobAIRandom.Next(0, MoveRatio * 4))
+                    {
+                        case 0:
+                            if (this.Move(Direction.left))
+                                break;
+                            else
+                                return;
+                        case 1:
+                            if (this.Move(Direction.up))
+                                break;
+                            else
+                                return;
+                        case 2:
+                            if (this.Move(Direction.right))
+                                break;
+                            else
+                                return;
+                        case 3:
+                            if (this.Move(Direction.down))
+                                break;
+                            else
+                                return;
+                    }
+            }
         }
     }
 }
