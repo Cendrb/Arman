@@ -49,7 +49,8 @@ namespace New_Arman
         {
             if (!Directory.Exists(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Arman")))
                 Directory.CreateDirectory(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Arman"));
-            path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Arman", "level.alvl");
+            //path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Arman", "level.alvl");
+            path = @"c:\Users\cendr_000\SkyDrive\Dokumenty\prasátko.alvl";
 
             graphics.PreferredBackBufferHeight = 800;
             graphics.PreferredBackBufferWidth = 1600;
