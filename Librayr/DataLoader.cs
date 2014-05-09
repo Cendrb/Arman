@@ -18,10 +18,10 @@ namespace Arman_Class_Library
         GameData data;
 
         private Game game;
-        private DataForLoader app;
+        private TexturesPaths app;
         private GameDataTools tools;
 
-        public DataLoader(string path, Game game, DataForLoader app, GameDataTools tools)
+        public DataLoader(string path, Game game, GameDataTools tools)
         {
             document = new XmlDocument();
 
@@ -85,7 +85,7 @@ namespace Arman_Class_Library
                     bool invulnerable = bool.Parse(playerElement.GetAttribute("Invulnerable"));
                     Controls controls = Controls.Parse(playerElement.GetAttribute("Controls"));
 
-                    data.Entities.Add(new Player(game, new PositionInGrid(x, y), app.PlayerTexture, tools, canPush, canBePushed, name, speed, controls, lives, invulnerable));
+                    data.Entities.Add(new Player(game, new PositionInGrid(x, y), tools, canPush, canBePushed, name, speed, controls, lives, invulnerable));
                 }
                 #endregion
                 #region Mobs
@@ -102,7 +102,7 @@ namespace Arman_Class_Library
                     int vision = int.Parse(mobElement.GetAttribute("Vision"));
                     int moveRatio = int.Parse(mobElement.GetAttribute("MoveRatio"));
 
-                    data.Entities.Add(new Mob(game, new PositionInGrid(x, y), app.MobTexture, tools, canPush, canBePushed, name, speed, vision, moveRatio));
+                    data.Entities.Add(new Mob(game, new PositionInGrid(x, y), tools, canPush, canBePushed, name, speed, vision, moveRatio));
                 }
                 #endregion
                 #region Movable Blocks
@@ -117,7 +117,7 @@ namespace Arman_Class_Library
                     bool canBePushed = bool.Parse(movableBlockElement.GetAttribute("CanBePushed"));
                     Color color = new Color(int.Parse(movableBlockElement.GetAttribute("R")), int.Parse(movableBlockElement.GetAttribute("G")), int.Parse(movableBlockElement.GetAttribute("B")), int.Parse(movableBlockElement.GetAttribute("A")));
 
-                    data.Entities.Add(new MovableBlock(game, new PositionInGrid(x, y), app.MovableBlockTexture, tools, canPush, canBePushed, name, color));
+                    data.Entities.Add(new MovableBlock(game, new PositionInGrid(x, y), tools, canPush, canBePushed, name, color));
                 }
                 #endregion
 
@@ -130,7 +130,7 @@ namespace Arman_Class_Library
                     int x = int.Parse(solidBlockElement.GetAttribute("XCoord"));
                     int y = int.Parse(solidBlockElement.GetAttribute("YCoord"));
 
-                    data.Blocks.Add(new Solid(game, new PositionInGrid(x, y), app.SolidBlockTexture, tools));
+                    data.Blocks.Add(new Solid(game, new PositionInGrid(x, y), tools));
                 }
                 #endregion
                 #region Air Blocks
@@ -141,7 +141,7 @@ namespace Arman_Class_Library
                     int x = int.Parse(airBlockElement.GetAttribute("XCoord"));
                     int y = int.Parse(airBlockElement.GetAttribute("YCoord"));
 
-                    data.Blocks.Add(new Air(game, new PositionInGrid(x, y), app.AirBlockTexture, tools));
+                    data.Blocks.Add(new Air(game, new PositionInGrid(x, y), tools));
                 }
                 #endregion
                 #region Detectors
@@ -158,9 +158,9 @@ namespace Arman_Class_Library
                     Color xnacolor = new Color(int.Parse(detectorElement.GetAttribute("R")), int.Parse(detectorElement.GetAttribute("G")), int.Parse(detectorElement.GetAttribute("B")), int.Parse(detectorElement.GetAttribute("A")));
 
                     if (positionOfBlockToRemove.X == -1 || positionOfBlockToRemove.Y == -1)
-                        data.Blocks.Add(new Detector(game, new PositionInGrid(x, y), app.DetectorTexture, tools, xnacolor, blockMovableBlockOnApproach, addToObjectives));
+                        data.Blocks.Add(new Detector(game, new PositionInGrid(x, y), tools, xnacolor, blockMovableBlockOnApproach, addToObjectives));
                     else
-                        data.Blocks.Add(new Detector(game, new PositionInGrid(x, y), app.DetectorTexture, tools, xnacolor, blockMovableBlockOnApproach, addToObjectives, positionOfBlockToRemove));
+                        data.Blocks.Add(new Detector(game, new PositionInGrid(x, y), tools, xnacolor, blockMovableBlockOnApproach, addToObjectives, positionOfBlockToRemove));
                 }
                 #endregion
                 #region Homes
@@ -171,7 +171,7 @@ namespace Arman_Class_Library
                     int x = int.Parse(homeElement.GetAttribute("XCoord"));
                     int y = int.Parse(homeElement.GetAttribute("YCoord"));
 
-                    data.Blocks.Add(new Home(game, new PositionInGrid(x, y), app.HomeTexture, tools));
+                    data.Blocks.Add(new Home(game, new PositionInGrid(x, y), tools));
                 }
                 #endregion
 
@@ -185,7 +185,7 @@ namespace Arman_Class_Library
                     int y = int.Parse(coinElement.GetAttribute("YCoord"));
                     int value = int.Parse(coinElement.GetAttribute("Value"));
 
-                    data.Coins.Add(new Coin(game, new PositionInGrid(x, y), app.CoinTexture, tools, value));
+                    data.Coins.Add(new Coin(game, new PositionInGrid(x, y), tools, value));
                 }
                 #endregion
 

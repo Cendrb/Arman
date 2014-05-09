@@ -14,8 +14,8 @@ namespace Arman_Class_Library
 
         private float movePause;
 
-        public Mob(Game game, PositionInGrid position, string texture, GameDataTools tools, bool canPush, bool canBePushed, string name, float speed, int vision, int moveRatio)
-            : base(game, position, texture, tools, canPush, canBePushed, name, speed)
+        public Mob(Game game, PositionInGrid position, GameDataTools tools, bool canPush, bool canBePushed, string name, float speed, int vision, int moveRatio)
+            : base(game, position, tools, canPush, canBePushed, name, speed)
         {
             Vision = vision;
             MoveRatio = moveRatio;
@@ -43,6 +43,11 @@ namespace Arman_Class_Library
             }
 
             base.Update(gameTime);
+        }
+        protected override void LoadContent()
+        {
+            texture = Textures.Mob;
+            base.LoadContent();
         }
         private bool tryToCatchPlayer()
         {

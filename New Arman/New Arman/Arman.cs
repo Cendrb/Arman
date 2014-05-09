@@ -29,7 +29,6 @@ namespace New_Arman
         SpriteFont arial;
         GraphicsDeviceManager graphics;
         GameArea area;
-        DataForLoader appData;
 
         private string path;
 
@@ -56,17 +55,17 @@ namespace New_Arman
             graphics.PreferredBackBufferWidth = 1600;
             graphics.ApplyChanges();
 
-            string playerTex, mobTex, mBlockTex, solidBlockTex, airBlockTex, detectorTex, coinTex, homeTex;
-            playerTex = @"Sprites/Entities/player";
-            mobTex = @"Sprites/Entities/mob";
-            mBlockTex = @"Sprites/Entities/movable";
-            solidBlockTex = @"Sprites/Blocks/solid";
-            airBlockTex = @"Sprites/Blocks/air";
-            detectorTex = @"Sprites/Blocks/detector";
-            coinTex = @"Sprites/Blocks/coin";
-            homeTex = @"Sprites/Blocks/detector"; // TERXTURE!
+            TexturesPaths appData = new TexturesPaths();
 
-            appData = new DataForLoader(playerTex, mobTex, mBlockTex, solidBlockTex, airBlockTex, detectorTex, coinTex, homeTex);
+            appData.Player = @"Sprites/Entities/player";
+            appData.Mob = @"Sprites/Entities/mob";
+            appData.MovableBlock = @"Sprites/Entities/movable";
+            appData.SolidBlock = @"Sprites/Blocks/solid";
+            appData.AirBlock = @"Sprites/Blocks/air";
+            appData.Detector = @"Sprites/Blocks/detector";
+            appData.Coin = @"Sprites/Blocks/coin";
+            appData.Home = @"Sprites/Blocks/detector"; // TERXTURE!
+            appData.KeyLockColorDot = @"Sprites/MobID/bottomMobID";
 
             area = new GameArea(this, path, appData);
             Components.Add(area);

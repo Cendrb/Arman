@@ -20,8 +20,8 @@ namespace Arman_Class_Library
 
         private int invulnerableAfterRespawnTimer;
 
-        public Player(Game game, PositionInGrid position, string texture, GameDataTools tools, bool canPush, bool canBePushed, string name, float speed, Controls controls, int lives, bool isInvulnerable)
-            : base(game, position, texture, tools, canPush, canBePushed, name, speed)
+        public Player(Game game, PositionInGrid position, GameDataTools tools, bool canPush, bool canBePushed, string name, float speed, Controls controls, int lives, bool isInvulnerable)
+            : base(game, position, tools, canPush, canBePushed, name, speed)
         {
             IsInvulnerable = isInvulnerable;
             Score = 0;
@@ -66,16 +66,21 @@ namespace Arman_Class_Library
             if (!IsMoving)
                 ReactToControls(Keyboard.GetState());
             Coin coin = tools.GetCoinAt(Position);
-            if(coin != null)
+            if (coin != null)
             {
                 PickupCoin(coin);
             }
             Block block = tools.GetBlockAt(Position);
-            if(block is Home)
+            if (block is Home)
                 IsHome = true;
             else
                 IsHome = false;
             base.Update(gameTime);
+        }
+        protected override void LoadContent()
+        {
+            texture = Textures.Player;
+            base.LoadContent();
         }
         public void ReactToControls(KeyboardState keyboardState)
         {

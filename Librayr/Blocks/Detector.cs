@@ -17,16 +17,16 @@ namespace Arman_Class_Library
 
         private bool blockRemoved = false;
 
-        public Detector(Game game, PositionInGrid position, string texture, GameDataTools tools, Color lockColor, bool blockMovableBlockOnApproach, bool isPartOfObjectives)
-            : base(game, position, texture, tools)
+        public Detector(Game game, PositionInGrid position, GameDataTools tools, Color lockColor, bool blockMovableBlockOnApproach, bool isPartOfObjectives)
+            : base(game, position, tools)
         {
             BlockMovableBlockOnApproach = blockMovableBlockOnApproach;
             LockColor = lockColor;
             IsPartOfObjectives = isPartOfObjectives;
             AffectedPosition = new PositionInGrid(-1);
         }
-        public Detector(Game game, PositionInGrid position, string texture, GameDataTools tools, Color lockColor, bool blockMovableBlockOnApproach, bool isPartOfObjectives, PositionInGrid affectedPosition)
-            : base(game, position, texture, tools)
+        public Detector(Game game, PositionInGrid position, GameDataTools tools, Color lockColor, bool blockMovableBlockOnApproach, bool isPartOfObjectives, PositionInGrid affectedPosition)
+            : base(game, position, tools)
         {
             BlockMovableBlockOnApproach = blockMovableBlockOnApproach;
             LockColor = lockColor;
@@ -48,12 +48,12 @@ namespace Arman_Class_Library
             {
                 Activated = false;
             }
-            if(Activated && AffectedPosition.X != -1 && !blockRemoved)
+            if (Activated && AffectedPosition.X != -1 && !blockRemoved)
             {
                 Block affectedBlock = tools.GetBlockAt(AffectedPosition);
-                if(affectedBlock != null)
+                if (affectedBlock != null)
                 {
-                    Air air = new Air(game, AffectedPosition, @"Sprites/Blocks/air", tools);
+                    Air air = new Air(game, AffectedPosition, tools);
                     tools.Data.Blocks.Remove(affectedBlock);
                     tools.Data.Blocks.Add(air);
                     Game.Components.Remove(affectedBlock);
@@ -67,6 +67,11 @@ namespace Arman_Class_Library
         {
             // TODO: vykreslování barevné tečky podle barvy zámku
             base.Draw(gameTime);
+        }
+        protected override void LoadContent()
+        {
+            texture = Textures.Detector;
+            base.LoadContent();
         }
     }
 }

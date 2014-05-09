@@ -235,7 +235,7 @@ namespace Level_Editor
                             if (block.Position == position)
                                 data.Blocks.Remove(block);
                         }
-                        data.Blocks.Add(new Air(null, position, null, null));
+                        data.Blocks.Add(new Air(null, position, null));
                         #endregion
                         break;
                     case Tools.coin:
@@ -249,7 +249,7 @@ namespace Level_Editor
                         coinWindow.ShowDialog();
                         try
                         {
-                            data.Coins.Add(new Coin(null, position, null, null, (int)coinWindow.valueUpDown.Value));
+                            data.Coins.Add(new Coin(null, position, null, (int)coinWindow.valueUpDown.Value));
                         }
                         catch (Exception ex)
                         {
@@ -278,9 +278,9 @@ namespace Level_Editor
                             color = new Microsoft.Xna.Framework.Color(detector.colorPicker.SelectedColor.R, detector.colorPicker.SelectedColor.G, detector.colorPicker.SelectedColor.B, detector.colorPicker.SelectedColor.A);
                             addToObjectives = detector.objectives.IsChecked.Value;
                             if (detector.removeBlock.IsChecked == true)
-                                data.Blocks.Add(new Detector(null, position, null, null, color, blockMovableBlockOnApproach, addToObjectives, detector.blockToRemove));
+                                data.Blocks.Add(new Detector(null, position, null, color, blockMovableBlockOnApproach, addToObjectives, detector.blockToRemove));
                             else
-                                data.Blocks.Add(new Detector(null, position, null, null, color, blockMovableBlockOnApproach, addToObjectives));
+                                data.Blocks.Add(new Detector(null, position, null, color, blockMovableBlockOnApproach, addToObjectives));
                         }
                         catch (Exception ex)
                         {
@@ -297,7 +297,7 @@ namespace Level_Editor
                                 data.Blocks.Remove(block);
                         }
 
-                        data.Blocks.Add(new Home(null, position, null, null));
+                        data.Blocks.Add(new Home(null, position, null));
                         #endregion
                         break;
                     case Tools.mob:
@@ -315,7 +315,7 @@ namespace Level_Editor
                         mob.ShowDialog();
                         try
                         {
-                            data.Entities.Add(new Mob(null, position, null, null, mob.canPushCheckBox.IsChecked.Value, mob.canBePushedCheckBox.IsChecked.Value, mob.nameTextBox.Text, (float)mob.speed.Value.Value, (int)mob.vision.Value, (int)mob.moveRatio.Value.Value));
+                            data.Entities.Add(new Mob(null, position, null, mob.canPushCheckBox.IsChecked.Value, mob.canBePushedCheckBox.IsChecked.Value, mob.nameTextBox.Text, (float)mob.speed.Value.Value, (int)mob.vision.Value, (int)mob.moveRatio.Value.Value));
                         }
                         catch (Exception ex)
                         {
@@ -338,7 +338,7 @@ namespace Level_Editor
 
                         try
                         {
-                            data.Entities.Add(new MovableBlock(null, position, null, null, mo.canPushCheckBox.IsChecked.Value, mo.canBePushedCheckBox.IsChecked.Value, mo.nameTextBox.Text, new Microsoft.Xna.Framework.Color(mo.colorPicker.SelectedColor.R, mo.colorPicker.SelectedColor.G, mo.colorPicker.SelectedColor.B, mo.colorPicker.SelectedColor.A)));
+                            data.Entities.Add(new MovableBlock(null, position, null, mo.canPushCheckBox.IsChecked.Value, mo.canBePushedCheckBox.IsChecked.Value, mo.nameTextBox.Text, new Microsoft.Xna.Framework.Color(mo.colorPicker.SelectedColor.R, mo.colorPicker.SelectedColor.G, mo.colorPicker.SelectedColor.B, mo.colorPicker.SelectedColor.A)));
                         }
                         catch (Exception ex)
                         {
@@ -362,7 +362,7 @@ namespace Level_Editor
                         player.ShowDialog();
                         try
                         {
-                            data.Entities.Add(new Player(null, position, null, null, player.canPushCheckBox.IsChecked.Value, player.canBePushedCheckBox.IsChecked.Value, player.nameTextBox.Text, (float)player.speed.Value,
+                            data.Entities.Add(new Player(null, position, null, player.canPushCheckBox.IsChecked.Value, player.canBePushedCheckBox.IsChecked.Value, player.nameTextBox.Text, (float)player.speed.Value,
                                 new Controls((Keys)Enum.Parse(typeof(Keys), player.upText.Text), (Keys)Enum.Parse(typeof(Keys), player.downText.Text), (Keys)Enum.Parse(typeof(Keys), player.leftText.Text), (Keys)Enum.Parse(typeof(Keys), player.rightText.Text)), (int)player.lives.Value, (bool)player.invulnerable.IsChecked));
                         }
                         catch (Exception ex)
@@ -380,7 +380,7 @@ namespace Level_Editor
                             if (block.Position == position)
                                 data.Blocks.Remove(block);
                         }
-                        data.Blocks.Add(new Solid(null, position, null, null));
+                        data.Blocks.Add(new Solid(null, position, null));
                         #endregion
                         break;
                 }
@@ -416,7 +416,7 @@ namespace Level_Editor
                     {
                         if (block.Position == position && !(block is Air))
                         {
-                            data.Blocks.Add(new Air(null, position, null, null));
+                            data.Blocks.Add(new Air(null, position, null));
                             data.Blocks.Remove(block);
                         }
                     }
@@ -721,7 +721,7 @@ namespace Level_Editor
                 fileName = dialog.FileName;
             if (fileName != String.Empty)
             {
-                dataLoader = new DataLoader(fileName, null, new DataForLoader(null, null, null, null, null, null, null, null), null);
+                dataLoader = new DataLoader(fileName, null, null);
                 data = dataLoader.ReadData(true);
                 resizeWindow(data.XGameArea, data.YGameArea);
                 refresh();
@@ -746,7 +746,7 @@ namespace Level_Editor
                 fileName = dialog.FileName;
             if (fileName != String.Empty)
             {
-                dataLoader = new DataLoader(fileName, null, null, null);
+                dataLoader = new DataLoader(fileName, null, null);
                 dataLoader.SaveData(data);
                 changesSaved = true;
                 return true;
@@ -773,7 +773,7 @@ namespace Level_Editor
             for (int x = 0; x < sizeX; x++)
                 for (int y = 0; y < sizeY; y++)
                 {
-                    data.Blocks.Add(new Air(null, new PositionInGrid(x, y), null, null));
+                    data.Blocks.Add(new Air(null, new PositionInGrid(x, y), null));
                 }
             resizeWindow(sizeX, sizeY);
             refresh();

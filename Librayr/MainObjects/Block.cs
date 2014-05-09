@@ -20,8 +20,8 @@ namespace Arman_Class_Library
         /// <param name="spriteBatch">Where to draw textures</param>
         /// <param name="position">Where it should be placed</param>
         /// <param name="texture">What to draw on Draw() call</param>
-        public Block(Game game, PositionInGrid position, string texture, GameDataTools tools)
-            : base(game, position, texture, tools)
+        public Block(Game game, PositionInGrid position, GameDataTools tools)
+            : base(game, position, tools)
         {
 
         }

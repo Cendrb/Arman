@@ -28,13 +28,12 @@ namespace Arman_Class_Library
         /// <param name="game">Main game component</param>
         /// <param name="spriteBatch">Specifies where to draw textures</param>
         /// <param name="position">Specifies position in game grid</param>
-        /// <param name="texture">Texture to draw</param>
         /// <param name="canPush">Defines if that entity can push others</param>
         /// <param name="canBePushed">Defines if that entity can be pushed by others</param>
         /// <param name="move">Super-action to solve move dependencies - returns result</param>
         /// <param name="name">Name of entity</param>
-        public Entity(Game game, PositionInGrid position, string texture, GameDataTools tools, bool canPush, bool canBePushed, string name, float speed)
-            : base(game, position, texture, tools)
+        public Entity(Game game, PositionInGrid position, GameDataTools tools, bool canPush, bool canBePushed, string name, float speed)
+            : base(game, position, tools)
         {
             movingDifference = 0.0F;
             Name = name;

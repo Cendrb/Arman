@@ -9,10 +9,15 @@ namespace Arman_Class_Library
 {
     public class Air : Block
     {
-        public Air(Game game, PositionInGrid position, string texture, GameDataTools tools)
-            : base(game, position, texture, tools)
+        public Air(Game game, PositionInGrid position, GameDataTools tools)
+            : base(game, position, tools)
         {
 
+        }
+        protected override void LoadContent()
+        {
+            texture = Textures.Air;
+            base.LoadContent();
         }
     }
 }

@@ -51,7 +51,7 @@ namespace Arman_Class_Library
         public List<Entity> entities = new List<Entity>();
 
         private DataLoader dataLoader;
-        private DataForLoader dataForLoader;
+        private TexturesPaths dataForLoader;
         private GameData data;
         private GameDataTools tools;
         private string levelSourcePath;
@@ -65,7 +65,7 @@ namespace Arman_Class_Library
         private bool playersHome = false;
         private bool won = false;
 
-        public GameArea(Game game, string levelSource, DataForLoader dataForLoader)
+        public GameArea(Game game, string levelSource, TexturesPaths dataForLoader)
             : base(game)
         {
             this.dataForLoader = dataForLoader;
