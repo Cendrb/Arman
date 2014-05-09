@@ -17,5 +17,11 @@ namespace Arman_Class_Library
         {
             Value = value;
         }
+
+        protected override void LoadContent()
+        {
+            texture = Textures.Coin;
+            base.LoadContent();
+        }
     }
 }

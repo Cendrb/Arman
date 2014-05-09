@@ -26,7 +26,7 @@ namespace Arman_Class_Library
         }
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = Textures.SpriteBatch;
         }
     }
 }

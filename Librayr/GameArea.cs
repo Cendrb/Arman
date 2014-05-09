@@ -51,9 +51,9 @@ namespace Arman_Class_Library
         public List<Entity> entities = new List<Entity>();
 
         private DataLoader dataLoader;
-        private TexturesPaths dataForLoader;
         private GameData data;
         private GameDataTools tools;
+        private TexturesPaths paths; 
         private string levelSourcePath;
         public static Random mobAIRandom;
         private SpriteBatch spriteBatch;
@@ -65,18 +65,18 @@ namespace Arman_Class_Library
         private bool playersHome = false;
         private bool won = false;
 
-        public GameArea(Game game, string levelSource, TexturesPaths dataForLoader)
+        public GameArea(Game game, string levelSource, TexturesPaths paths)
             : base(game)
         {
-            this.dataForLoader = dataForLoader;
             levelSourcePath = levelSource;
+            this.paths = paths;
         }
         public override void Initialize()
         {
             mobAIRandom = new Random();
 
             tools = new GameDataTools();
-            dataLoader = new DataLoader(levelSourcePath, Game, dataForLoader, tools);
+            dataLoader = new DataLoader(levelSourcePath, Game, tools);
 
             data = dataLoader.ReadData(true);
             tools.Data = data;
@@ -102,6 +102,7 @@ namespace Arman_Class_Library
         }
         protected override void LoadContent()
         {
+            Textures.Load(paths, tools);
             spriteBatch = new SpriteBatch(GraphicsDevice);
             defaultFont = Game.Content.Load<SpriteFont>(@"Fonts/BigCourier");
             base.LoadContent();

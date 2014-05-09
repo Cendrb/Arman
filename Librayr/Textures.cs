@@ -21,27 +21,23 @@ namespace Arman_Class_Library
 
         public static Texture2D KeyLockColorDot { get; private set; }
 
+        public static SpriteBatch SpriteBatch { get; private set; }
+
         public static bool Load(TexturesPaths paths, GameDataTools tools)
         {
-            try
-            {
-                Air = tools.Game.Content.Load<Texture2D>(paths.AirBlock);
-                Mob = tools.Game.Content.Load<Texture2D>(paths.KeyLockColorDot);
-                MovableBlock = tools.Game.Content.Load<Texture2D>(paths.MovableBlock);
-                Solid = tools.Game.Content.Load<Texture2D>(paths.SolidBlock);
-                Player = tools.Game.Content.Load<Texture2D>(paths.Player);
-                Detector = tools.Game.Content.Load<Texture2D>(paths.Detector);
-                Home = tools.Game.Content.Load<Texture2D>(paths.Home);
-                Coin = tools.Game.Content.Load<Texture2D>(paths.Coin);
-                KeyLockColorDot = tools.Game.Content.Load<Texture2D>(paths.KeyLockColorDot);
+            Air = tools.Game.Content.Load<Texture2D>(paths.AirBlock);
+            Mob = tools.Game.Content.Load<Texture2D>(paths.KeyLockColorDot);
+            MovableBlock = tools.Game.Content.Load<Texture2D>(paths.MovableBlock);
+            Solid = tools.Game.Content.Load<Texture2D>(paths.SolidBlock);
+            Player = tools.Game.Content.Load<Texture2D>(paths.Player);
+            Detector = tools.Game.Content.Load<Texture2D>(paths.Detector);
+            Home = tools.Game.Content.Load<Texture2D>(paths.Home);
+            Coin = tools.Game.Content.Load<Texture2D>(paths.Coin);
+            KeyLockColorDot = tools.Game.Content.Load<Texture2D>(paths.KeyLockColorDot);
 
-                return true;
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
+            SpriteBatch = new Microsoft.Xna.Framework.Graphics.SpriteBatch(tools.Game.GraphicsDevice);
+
+            return true;
         }
     }
 }

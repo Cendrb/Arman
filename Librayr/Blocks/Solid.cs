@@ -10,7 +10,7 @@ namespace Arman_Class_Library
     public class Solid : Block
     {
         public Solid(Game game, PositionInGrid position, GameDataTools tools)
-            : base(game, texture, tools)
+            : base(game, position, tools)
         {
 
         }

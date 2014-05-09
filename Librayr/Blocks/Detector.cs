@@ -65,8 +65,13 @@ namespace Arman_Class_Library
         }
         public override void Draw(GameTime gameTime)
         {
-            // TODO: vykreslování barevné tečky podle barvy zámku
             base.Draw(gameTime);
+            Vector2 coor = getAbsoluteCoordinates();
+            Rectangle rect = new Rectangle((int)coor.X + tools.Data.OneBlockSize / 3, (int)coor.Y + tools.Data.OneBlockSize / 3, tools.Data.OneBlockSize / 3, tools.Data.OneBlockSize / 3);
+
+            spriteBatch.Begin();
+            spriteBatch.Draw(Textures.KeyLockColorDot, rect, LockColor);
+            spriteBatch.End();
         }
         protected override void LoadContent()
         {

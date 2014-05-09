@@ -147,12 +147,12 @@ namespace Arman_Class_Library
             #endregion
             return true;
         }
-        private Vector2 getAbsoluteCoordinates()
+        protected Vector2 getAbsoluteCoordinates()
         {
             Vector2 relative = getRelativeCoordinates();
             return new Vector2(relative.X + GameArea.StartingCoordinates.X, relative.Y + GameArea.StartingCoordinates.Y);
         }
-        private Vector2 getRelativeCoordinates()
+        protected Vector2 getRelativeCoordinates()
         {
             if (IsMoving)
             {

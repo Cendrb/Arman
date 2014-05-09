@@ -34,11 +34,11 @@ namespace Arman_Class_Library
 
             base.Draw(gameTime);
         }
-        private Vector2 getRelativeCoordinates()
+        protected Vector2 getRelativeCoordinates()
         {
             return new Vector2(Position.X * GameArea.OneBlockSize, Position.Y * GameArea.OneBlockSize);
         }
-        private Vector2 getAbsoluteCoordinates()
+        protected Vector2 getAbsoluteCoordinates()
         {
             Vector2 position = getRelativeCoordinates();
             return new Vector2(position.X + GameArea.StartingCoordinates.X, position.Y + GameArea.StartingCoordinates.Y);

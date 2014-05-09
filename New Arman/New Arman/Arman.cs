@@ -65,7 +65,7 @@ namespace New_Arman
             appData.Detector = @"Sprites/Blocks/detector";
             appData.Coin = @"Sprites/Blocks/coin";
             appData.Home = @"Sprites/Blocks/detector"; // TERXTURE!
-            appData.KeyLockColorDot = @"Sprites/MobID/bottomMobID";
+            appData.KeyLockColorDot = @"Sprites/5dot";
 
             area = new GameArea(this, path, appData);
             Components.Add(area);
