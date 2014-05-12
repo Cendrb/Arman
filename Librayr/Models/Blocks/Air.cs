@@ -10,7 +10,7 @@ namespace Arman_Class_Library
     public class Air : Block
     {
         public Air(Game game, PositionInGrid position, GameDataTools tools)
-            : base(game, position, tools)
+            : base(position)
         {
 
         }

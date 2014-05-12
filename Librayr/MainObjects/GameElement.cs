@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Arman_Class_Library
+namespace Arman_Class_Library.Temp
 {
     public class GameElement : Microsoft.Xna.Framework.DrawableGameComponent
     {
