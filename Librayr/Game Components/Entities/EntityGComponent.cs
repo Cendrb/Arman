@@ -1,14 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+/*
 namespace Arman_Class_Library
 {
-    [Serializable]
-    public abstract class Entity : GameElement
+    public class EntityGComponent
     {
         public bool CanPush { get; private set; }
         public bool CanBePushed { get; set; }
@@ -183,3 +180,4 @@ namespace Arman_Class_Library
         }
     }
 }
+*/

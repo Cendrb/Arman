@@ -1,7 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -11,15 +10,15 @@ namespace Arman_Class_Library
     {
         public Color KeyColor { get; private set; }
 
-        public MovableBlock(Game game, PositionInGrid position, GameDataTools tools, bool canPush, bool canBePushed, string name, Color keyColor)
-            : base(game, position, tools, canPush, canBePushed, name, GameArea.Speed)
+        public MovableBlock(PositionInGrid position, string name, bool canPush, bool canBePushed, float speed, bool collides, double health, bool invulnerable, Color keyColor)
+            : base(position, name, canPush, canBePushed, speed, collides, health, invulnerable)
         {
             KeyColor = keyColor;
         }
-        protected override void LoadContent()
+        public MovableBlock(PositionInGrid position, bool canPush, bool canBePushed, float speed, bool collides, double health, bool invulnerable, Color keyColor)
+            : base(position, "Movable block", canPush, canBePushed, speed, collides, health, invulnerable)
         {
-            texture = Textures.MovableBlock;
-            base.LoadContent();
+            KeyColor = keyColor;
         }
     }
 }

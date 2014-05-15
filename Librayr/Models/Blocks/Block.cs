@@ -8,10 +8,24 @@ using System.Diagnostics;
 
 namespace Arman_Class_Library
 {
-    public abstract class Block : GameElement
+    public class Block : GameElement
     {
-        public Block(PositionInGrid position)
-            : base(position)
+        public bool Solid { get; protected set; }
+        public double BlastResistance { get; protected set; }
+
+        public Block(PositionInGrid position, string name, bool solid, double blastResistence)
+            : base(position, name)
+        {
+            Solid = solid;
+            BlastResistance = blastResistence;
+        }
+        public Block(PositionInGrid position, bool solid, double blastResistence)
+            : base(position, "Generic block")
+        {
+            Solid = solid;
+            BlastResistance = blastResistence;
+        }
+        public Block()
         {
 
         }

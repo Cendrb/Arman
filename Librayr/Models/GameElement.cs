@@ -5,32 +5,26 @@ using System.Text;
 
 namespace Arman_Class_Library
 {
-    public class GameElement
+    public abstract class GameElement
     {
-        public string Name { get; protected set; }
-        public PositionInGrid Position { get; protected set; }
+        public string Name { get; set; }
+        public PositionInGrid Position { get; set; }
         public string Info
         {
             get
             {
-                return String.Format("{0} ({1}; {2})");
+                return String.Format("{0} ({1}; {2})", Name, Position.X, Position.Y);
             }
-            private set
-            {
-
-            }
-        }
-
-        public GameElement(PositionInGrid position)
-        {
-            Position = position;
-            Name = "Game element";
         }
 
         public GameElement(PositionInGrid position, string name)
         {
             Position = position;
             Name = name;
+        }
+        public GameElement()
+        {
+
         }
     }
 }

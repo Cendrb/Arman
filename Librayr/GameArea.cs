@@ -11,7 +11,8 @@ namespace Arman_Class_Library
 {
     public enum TryMoveResult { free, blockedByMovableEntity, blocked }
     public enum Direction { up, down, left, right }
-
+}
+    /*
     public class GameArea : DrawableGameComponent
     {
         public static int OneBlockSize;
@@ -166,3 +167,4 @@ namespace Arman_Class_Library
         }
     }
 }
+*/

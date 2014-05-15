@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,15 +7,15 @@ namespace Arman_Class_Library
 {
     public class Air : Block
     {
-        public Air(Game game, PositionInGrid position, GameDataTools tools)
-            : base(position)
+        public Air(PositionInGrid position, string name)
+            : base(position, name, false, 500000.0 )
         {
 
         }
-        protected override void LoadContent()
+        public Air(PositionInGrid position)
+            : base(position, "Air block" ,false, 500000.0)
         {
-            texture = Textures.Air;
-            base.LoadContent();
+
         }
     }
 }

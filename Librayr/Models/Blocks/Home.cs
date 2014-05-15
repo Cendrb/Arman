@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,16 +7,16 @@ namespace Arman_Class_Library
 {
     public class Home : Block
     {
-        public bool PlayerInside { get; set; }
-        public Home(Game game, PositionInGrid position, GameDataTools tools)
-            : base(game, position, tools)
+        public bool PlayerInside { get; private set; }
+        public Home(PositionInGrid position, string name, double blastResistence)
+            : base(position, name, false, blastResistence)
         {
 
         }
-        protected override void LoadContent()
+        public Home(PositionInGrid position, double blastResistence)
+            : base(position, "Home", false, blastResistence)
         {
-            texture = Textures.Home;
-            base.LoadContent();
+
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,15 +7,15 @@ namespace Arman_Class_Library
 {
     public class Solid : Block
     {
-        public Solid(Game game, PositionInGrid position, GameDataTools tools)
-            : base(game, position, tools)
+        public Solid(PositionInGrid position, string name, double blastResistence)
+            : base(position, name, true, blastResistence)
         {
 
         }
-        protected override void LoadContent()
+        public Solid(PositionInGrid position, double blastResistence)
+            : base(position, "Solid", true, blastResistence)
         {
-            texture = Textures.Solid;
-            base.LoadContent();
+
         }
     }
 }

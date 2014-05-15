@@ -235,7 +235,7 @@ namespace Level_Editor
                             if (block.Position == position)
                                 data.Blocks.Remove(block);
                         }
-                        data.Blocks.Add(new Air(null, position, null));
+                        data.Blocks.Add(new Air(position));
                         #endregion
                         break;
                     case Tools.coin:
@@ -267,7 +267,7 @@ namespace Level_Editor
                         }
 
                         // prepare variables
-                        Microsoft.Xna.Framework.Color color;
+                        Color color;
                         bool blockMovableBlockOnApproach, addToObjectives;
 
                         Windows.Detector detector = new Windows.Detector(data);
@@ -275,10 +275,11 @@ namespace Level_Editor
                         try
                         {
                             blockMovableBlockOnApproach = detector.blockPlacedMovableBlockCheckBox.IsChecked.Value;
-                            color = new Microsoft.Xna.Framework.Color(detector.colorPicker.SelectedColor.R, detector.colorPicker.SelectedColor.G, detector.colorPicker.SelectedColor.B, detector.colorPicker.SelectedColor.A);
+                            color = new System.Drawing.Color()
+                            color.
                             addToObjectives = detector.objectives.IsChecked.Value;
                             if (detector.removeBlock.IsChecked == true)
-                                data.Blocks.Add(new Detector(null, position, null, color, blockMovableBlockOnApproach, addToObjectives, detector.blockToRemove));
+                                data.Blocks.Add(new Detector(position, 69.0, color, blockMovableBlockOnApproach, addToObjectives, detector.blockToRemove));
                             else
                                 data.Blocks.Add(new Detector(null, position, null, color, blockMovableBlockOnApproach, addToObjectives));
                         }
@@ -297,7 +298,7 @@ namespace Level_Editor
                                 data.Blocks.Remove(block);
                         }
 
-                        data.Blocks.Add(new Home(null, position, null));
+                        data.Blocks.Add(new Home(position, 69.0));
                         #endregion
                         break;
                     case Tools.mob:
@@ -362,8 +363,8 @@ namespace Level_Editor
                         player.ShowDialog();
                         try
                         {
-                            data.Entities.Add(new Player(null, position, null, player.canPushCheckBox.IsChecked.Value, player.canBePushedCheckBox.IsChecked.Value, player.nameTextBox.Text, (float)player.speed.Value,
-                                new Controls((Keys)Enum.Parse(typeof(Keys), player.upText.Text), (Keys)Enum.Parse(typeof(Keys), player.downText.Text), (Keys)Enum.Parse(typeof(Keys), player.leftText.Text), (Keys)Enum.Parse(typeof(Keys), player.rightText.Text)), (int)player.lives.Value, (bool)player.invulnerable.IsChecked));
+                            data.Entities.Add(new Player(position, player.nameTextBox.Text, player.canPushCheckBox.IsChecked.Value, player.canBePushedCheckBox.IsChecked.Value, (float)player.speed.Value, true, 69.0, (bool)player.invulnerable.IsChecked,
+                                new Controls(player.upText.Text, player.downText.Text, player.leftText.Text, player.rightText.Text), (int)player.lives.Value));
                         }
                         catch (Exception ex)
                         {
@@ -380,7 +381,7 @@ namespace Level_Editor
                             if (block.Position == position)
                                 data.Blocks.Remove(block);
                         }
-                        data.Blocks.Add(new Solid(null, position, null));
+                        data.Blocks.Add(new Solid(position));
                         #endregion
                         break;
                 }
