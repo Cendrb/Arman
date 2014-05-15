@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Arman_Class_Library
 {
+    [Serializable]
     public class Objectives
     {
         public bool CollectAllCoins { get; set; }

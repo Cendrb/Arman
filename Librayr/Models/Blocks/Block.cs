@@ -9,6 +9,7 @@ using System.Xml.Serialization;
 
 namespace Arman_Class_Library
 {
+    [Serializable]
     [XmlInclude(typeof(Air))]
     [XmlInclude(typeof(Coin))]
     [XmlInclude(typeof(Detector))]

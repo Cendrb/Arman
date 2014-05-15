@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Arman_Class_Library
 {
+    [Serializable]
     public class Home : Block
     {
         public bool PlayerInside { get; set; }

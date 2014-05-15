@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace Test
 {
@@ -20,6 +22,12 @@ namespace Test
             data.Speed = 69;
             data.XGameArea = 23;
             data.YGameArea = 23;
+
+            FileStream fs = new FileStream(@"c:\Users\cendr_000\Downloads\rake test\gay.bin", FileMode.OpenOrCreate);
+
+            BinaryFormatter formatter = new BinaryFormatter();
+            data = (GameData)formatter.Deserialize(fs);
+            formatter.Serialize(fs, data);
 
             DataLoader fap = new DataLoader(@"c:\Users\cendr_000\Downloads\rake test\dildo.xml");
             fap.SaveData(data);

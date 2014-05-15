@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Arman_Class_Library
 {
+    [Serializable]
     public abstract class GameElement
     {
         public string Name { get; set; }

@@ -3,33 +3,43 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-/*
+
 namespace Arman_Class_Library
 {
     public class DetectorGComponent : BlockGComponent
     {
+        private Detector model;
         private bool blockRemoved = false;
+
+        public bool Activated { get; private set; }
+
+        public DetectorGComponent(Game game, GameDataTools tools, Detector model)
+            : base(game, tools, model)
+        {
+
+            this.model = model;
+        }
         public override void Update(GameTime gameTime)
         {
-            Entity entity = tools.GetEntityAt(Position);
+            Entity entity = tools.GetEntityAt(model.Position);
             if (entity is MovableBlock)
             {
-                if ((entity as MovableBlock).KeyColor == Color.White || LockColor == Color.White || (entity as MovableBlock).KeyColor == LockColor)
+                if (Color.AliceBlue == Color.White || Color.AliceBlue == Color.White/* || (entity as MovableBlock).KeyColor == LockColor*/)
                 {
                     Activated = true;
-                    (entity as MovableBlock).CanBePushed = !BlockMovableBlockOnApproach;
+                    (entity as MovableBlock).CanBePushed = !model.BlockMovableBlockOnApproach;
                 }
             }
             else
             {
                 Activated = false;
             }
-            if (Activated && AffectedPosition.X != -1 && !blockRemoved)
+            if (Activated && model.AffectedPosition.X != -1 && !blockRemoved)
             {
-                Block affectedBlock = tools.GetBlockAt(AffectedPosition);
+                BlockGComponent affectedBlock = tools.GetBlockAt(model.AffectedPosition);
                 if (affectedBlock != null)
                 {
-                    Air air = new Air(game, AffectedPosition, tools);
+                    AirGComponent air = new Air(model.AffectedPosition);
                     tools.Data.Blocks.Remove(affectedBlock);
                     tools.Data.Blocks.Add(air);
                     Game.Components.Remove(affectedBlock);
@@ -51,4 +61,3 @@ namespace Arman_Class_Library
         }
     }
 }
-*/

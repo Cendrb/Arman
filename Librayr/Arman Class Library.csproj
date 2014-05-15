@@ -62,8 +62,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls.cs" />
+    <Compile Include="Game Components\Blocks\AirGComponent.cs" />
     <Compile Include="Game Components\Blocks\BlockGComponent.cs" />
+    <Compile Include="Game Components\Blocks\CoinGComponent.cs" />
     <Compile Include="Game Components\Blocks\DetectorGComponent.cs" />
+    <Compile Include="Game Components\Blocks\HomeGComponent.cs" />
+    <Compile Include="Game Components\Blocks\SolidGComponent.cs" />
     <Compile Include="Game Components\Entities\EntityGComponent.cs" />
     <Compile Include="Game Components\Entities\MobGComponent.cs" />
     <Compile Include="Game Components\Entities\PlayerGComponent.cs" />

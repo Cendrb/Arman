@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Arman_Class_Library
 {
+    [Serializable]
     public class Solid : Block
     {
         public Solid(PositionInGrid position, string name, double blastResistence)

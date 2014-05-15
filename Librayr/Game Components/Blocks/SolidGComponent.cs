@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Arman_Class_Library
+namespace Arman_Class_Library.Game_Components.Blocks
 {
-    public class BlockGComponent : GameComponent
+    public class SolidGComponent : BlockGComponent
     {
-        private Block model;
-        public BlockGComponent(Game game, GameDataTools tools, Block model)
+        private Solid model;
+        public SolidGComponent(Game game, GameDataTools tools, Solid model)
             : base(game, tools, model)
         {
 

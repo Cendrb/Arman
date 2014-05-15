@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Arman_Class_Library
 {
+    [Serializable]
     public class Air : Block
     {
         public Air(PositionInGrid position, string name)

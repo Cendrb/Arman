@@ -6,10 +6,10 @@ using System.Text;
 
 namespace Arman_Class_Library
 {
+    [Serializable]
     public class Detector : Block
     {
         public Color LockColor { get; set; }
-        public bool Activated { get; set; }
         public bool BlockMovableBlockOnApproach { get; set; }
         public bool IsPartOfObjectives { get; set; }
         public PositionInGrid AffectedPosition { get; set; }

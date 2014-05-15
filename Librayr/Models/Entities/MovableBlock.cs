@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Arman_Class_Library
 {
+    [Serializable]
     public class MovableBlock : Entity
     {
         public Color KeyColor { get; set; }

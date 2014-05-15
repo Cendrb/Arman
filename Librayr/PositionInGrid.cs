@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Arman_Class_Library
 {
+    [Serializable]
     public class PositionInGrid : IComparable<PositionInGrid>
     {
         public PositionInGrid(int X, int Y)

@@ -6,6 +6,7 @@ using System.Xml.Serialization;
 
 namespace Arman_Class_Library
 {
+    [Serializable]
     [XmlInclude(typeof(Mob))]
     [XmlInclude(typeof(MovableBlock))]
     [XmlInclude(typeof(Player))]
