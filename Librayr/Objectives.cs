@@ -23,10 +23,6 @@ namespace Arman_Class_Library
                     obj++;
                 return obj;
             }
-            private set
-            {
-
-            }
         }
 
         public Objectives Clone()

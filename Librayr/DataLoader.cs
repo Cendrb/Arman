@@ -65,6 +65,10 @@ namespace Arman_Class_Library
                 MessageBox.Show(String.Format("Game file ({0}) could not be saved. - {1}", Path, e.Message), "Save error");
                 MessageBox.Show(e.InnerException.Message);
                 MessageBox.Show(e.InnerException.InnerException.Message);
+                MessageBox.Show(e.InnerException.InnerException.Message);
+                MessageBox.Show(e.InnerException.InnerException.InnerException.Message);
+                MessageBox.Show(e.InnerException.InnerException.InnerException.InnerException.Message);
+                MessageBox.Show(e.InnerException.InnerException.InnerException.InnerException.InnerException.Message);
             }
         }
     }

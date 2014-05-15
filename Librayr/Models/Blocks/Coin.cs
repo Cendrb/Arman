@@ -7,7 +7,7 @@ namespace Arman_Class_Library
 {
     public class Coin : Block
     {
-        public int Value { get; private set; }
+        public int Value { get; set; }
 
         public Coin(PositionInGrid position, string name, double explosionResistance, int value)
             : base(position, name, false, explosionResistance)

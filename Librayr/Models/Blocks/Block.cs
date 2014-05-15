@@ -4,14 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Xml.Serialization;
 
 
 namespace Arman_Class_Library
 {
+    [XmlInclude(typeof(Air))]
+    [XmlInclude(typeof(Coin))]
+    [XmlInclude(typeof(Detector))]
+    [XmlInclude(typeof(Home))]
+    [XmlInclude(typeof(Solid))]
     public class Block : GameElement
     {
-        public bool Solid { get; protected set; }
-        public double BlastResistance { get; protected set; }
+        public bool Solid { get; set; }
+        public double BlastResistance { get; set; }
 
         public Block(PositionInGrid position, string name, bool solid, double blastResistence)
             : base(position, name)

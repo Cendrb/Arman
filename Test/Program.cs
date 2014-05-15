@@ -21,7 +21,7 @@ namespace Test
             data.XGameArea = 23;
             data.YGameArea = 23;
 
-            DataLoader fap = new DataLoader(@"c:\Users\cendr_000\Downloads\rake test\");
+            DataLoader fap = new DataLoader(@"c:\Users\cendr_000\Downloads\rake test\dildo.xml");
             fap.SaveData(data);
         }
     }

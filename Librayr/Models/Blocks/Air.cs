@@ -17,5 +17,9 @@ namespace Arman_Class_Library
         {
 
         }
+        public Air()
+        {
+
+        }
     }
 }

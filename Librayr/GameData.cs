@@ -8,9 +8,9 @@ namespace Arman_Class_Library
     [Serializable]
     public class GameData
     {
-        public List<Block> Blocks { get; private set; }
-        public List<Entity> Entities { get; private set; }
-        public List<Coin> Coins { get; private set; }
+        public List<Block> Blocks { get; set; }
+        public List<Entity> Entities { get; set; }
+        public List<Coin> Coins { get; set; }
 
         public int XGameArea { get; set; }
         public int YGameArea { get; set; }
@@ -18,7 +18,7 @@ namespace Arman_Class_Library
         public int Speed { get; set; }
         public int OneBlockSize { get; set; }
 
-        public Objectives Objectives { get; private set; }
+        public Objectives Objectives { get; set; }
 
         public GameData()
         {

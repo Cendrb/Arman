@@ -7,7 +7,7 @@ namespace Arman_Class_Library
 {
     public class Home : Block
     {
-        public bool PlayerInside { get; private set; }
+        public bool PlayerInside { get; set; }
         public Home(PositionInGrid position, string name, double blastResistence)
             : base(position, name, false, blastResistence)
         {
@@ -15,6 +15,10 @@ namespace Arman_Class_Library
         }
         public Home(PositionInGrid position, double blastResistence)
             : base(position, "Home", false, blastResistence)
+        {
+
+        }
+        public Home()
         {
 
         }

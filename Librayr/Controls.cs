@@ -7,13 +7,20 @@ namespace Arman_Class_Library
 {
     public class Controls
     {
-        public string up, right, down, left;
+        public string Up { get; set; }
+        public string Right { get; set; }
+        public string Down { get; set; }
+        public string Left { get; set; }
         public Controls(string up, string down, string left, string right)
         {
-            this.up = up;
-            this.right = right;
-            this.down = down;
-            this.left = left;
+            this.Up = up;
+            this.Right = right;
+            this.Down = down;
+            this.Left = left;
+        }
+        public Controls()
+        {
+
         }
         public static Controls Parse(string text)
         {

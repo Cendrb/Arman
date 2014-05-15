@@ -8,11 +8,11 @@ namespace Arman_Class_Library
 {
     public class Detector : Block
     {
-        public Color LockColor { get; private set; }
-        public bool Activated { get; private set; }
-        public bool BlockMovableBlockOnApproach { get; private set; }
-        public bool IsPartOfObjectives { get; private set; }
-        public PositionInGrid AffectedPosition { get; private set; }
+        public Color LockColor { get; set; }
+        public bool Activated { get; set; }
+        public bool BlockMovableBlockOnApproach { get; set; }
+        public bool IsPartOfObjectives { get; set; }
+        public PositionInGrid AffectedPosition { get; set; }
 
         public Detector(PositionInGrid position, string name, double blastResistance, Color lockColor, bool blockMovableBlockOnApproach, bool isPartOfObjectives)
             : base(position, name, false, blastResistance)
@@ -29,6 +29,10 @@ namespace Arman_Class_Library
             LockColor = lockColor;
             IsPartOfObjectives = isPartOfObjectives;
             AffectedPosition = affectedPosition;
+        }
+        public Detector()
+        {
+
         }
     }
 }
