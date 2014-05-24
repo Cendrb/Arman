@@ -1,5 +1,5 @@
-﻿using Arman_Class_Library;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Arman_Class_Library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +14,12 @@ namespace Test
     {
         static void Main(string[] args)
         {
+
+            Console.WriteLine(PositionInGrid.GetDirection(new PositionInGrid(), new PositionInGrid(2, 5)));
+            Console.ReadKey();
+
+
+            /*
             GameData data = new GameData();
             data.Blocks.Add(new Air(new PositionInGrid(23, 69), "Maryporn"));
             data.Entities.Add(new Mob(new PositionInGrid(39, 69), "gay", true, true, 69, true, 100.0, false, 10, 69, 69));
@@ -30,7 +36,7 @@ namespace Test
             formatter.Serialize(fs, data);
 
             DataLoader fap = new DataLoader(@"c:\Users\cendr_000\Downloads\rake test\dildo.xml");
-            fap.SaveData(data);
+            fap.SaveData(data);*/
         }
     }
 }

@@ -8,12 +8,24 @@ namespace Arman_Class_Library
 {
     public class BlockGComponent : GameComponent
     {
-        private Block model;
-        public BlockGComponent(Game game, GameDataTools tools, Block model)
-            : base(game, tools, model)
+        public new Block Model { get; private set; }
+        public BlockGComponent(GameComponents tools, Block model)
+            : base(tools, model)
         {
+            this.DrawOrder = 5;
+            Model = model;
+        }
 
-            this.model = model;
+        public Vector2 GetRelativeCoordinates()
+        {
+            return new Vector2(Model.Position.X * tools.Data.OneBlockSize, Model.Position.Y * tools.Data.OneBlockSize);
+        }
+        public override Vector2 GetAbsoluteCoordinates()
+        {
+            Vector2 coor = GetRelativeCoordinates();
+            coor.X += GameArea.StartingCoordinates.X;
+            coor.Y += GameArea.StartingCoordinates.Y;
+            return coor;
         }
     }
 }

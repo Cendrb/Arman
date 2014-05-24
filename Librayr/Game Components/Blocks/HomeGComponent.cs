@@ -4,16 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Arman_Class_Library.Game_Components.Blocks
+namespace Arman_Class_Library
 {
     public class HomeGComponent : BlockGComponent
     {
-        private Home model;
-        public HomeGComponent(Game game, GameDataTools tools, Home model)
-            : base(game, tools, model)
+        public new Home Model { get; private set; }
+        public HomeGComponent(GameComponents tools, Home model)
+            : base(tools, model)
         {
-
-            this.model = model;
+            Model = model;
+        }
+        protected override void LoadContent()
+        {
+            texture = Textures.Home;
+            base.LoadContent();
         }
     }
 }

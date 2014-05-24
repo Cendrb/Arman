@@ -48,6 +48,7 @@
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.GamerServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="mscorlib" />
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -61,6 +62,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArmanColor.cs" />
     <Compile Include="Controls.cs" />
     <Compile Include="Game Components\Blocks\AirGComponent.cs" />
     <Compile Include="Game Components\Blocks\BlockGComponent.cs" />
@@ -70,8 +72,10 @@
     <Compile Include="Game Components\Blocks\SolidGComponent.cs" />
     <Compile Include="Game Components\Entities\EntityGComponent.cs" />
     <Compile Include="Game Components\Entities\MobGComponent.cs" />
+    <Compile Include="Game Components\Entities\MovableBlockGComponent.cs" />
     <Compile Include="Game Components\Entities\PlayerGComponent.cs" />
     <Compile Include="Game Components\GameComponent.cs" />
+    <Compile Include="GameComponents.cs" />
     <Compile Include="Models\Blocks\Coin.cs" />
     <Compile Include="Models\Entities\Entity.cs" />
     <Compile Include="Models\GameElement.cs" />
@@ -88,17 +92,14 @@
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="GameArea.cs" />
     <Compile Include="GameData.cs" />
-    <Compile Include="GameDataTools.cs" />
+    <Compile Include="Deprecated.cs" />
     <Compile Include="Models\Blocks\Block.cs" />
-    <Compile Include="MainObjects\GameElement.cs" />
     <Compile Include="Objectives.cs" />
     <Compile Include="PositionInGrid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Textures.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Blocks\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

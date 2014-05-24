@@ -1,111 +1,86 @@
 ﻿
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-/*
+
 namespace Arman_Class_Library
 {
     public class MobGComponent : EntityGComponent
     {
-        public int Vision { get; private set; }
-        public int MoveRatio { get; private set; }
+        private bool onTheWay = false;
+
+        public new Mob Model { get; private set; }
 
         private float movePause;
+        private PositionInGrid target = new PositionInGrid();
 
-        public MobGComponent(Game game, PositionInGrid position, GameDataTools tools, bool canPush, bool canBePushed, string name, float speed, int vision, int moveRatio)
-            : base(game, position, tools, canPush, canBePushed, name, speed)
+        public MobGComponent(GameComponents tools, Mob model)
+            : base(tools, model)
         {
-            Vision = vision;
-            MoveRatio = moveRatio;
-            movePause = 0;
+            movePause = model.WanderChance;
+            Model = model;
         }
         public override void Update(GameTime gameTime)
         {
-            Entity entity = tools.GetEntityAt(Position);
-            if (entity is Player)
+            if (Position == target)
+                onTheWay = false;
+            if (onTheWay)
+                GoToPosition(target);
+            if (!IsMoving)
             {
-                (entity as Player).Die(this);
-            }
-            else
-            {
-                if (!IsMoving)
+                if (!onTheWay)
+                    movePause -= 1;
+                if (movePause == 0)
                 {
-                    if (!tryToCatchPlayer())
-                        movePause += GameArea.OneBlockSize / (GameArea.TimeForMove - Speed);
-                    if (movePause > GameArea.OneBlockSize)
-                    {
-                        movePause = 0;
-                        wander();
-                    }
+                    movePause = Model.WanderChance;
+                    wander();
                 }
             }
 
             base.Update(gameTime);
+        }
+        private void wander()
+        {
+            if (!onTheWay)
+            {
+                List<PositionInGrid> positions = PositionInGrid.GetPositionsInSquareRadius(Model.WanderRange, Position);
+                List<PositionInGrid> verifiedPositions = new List<PositionInGrid>();
+
+                Random rnd = new Random();
+
+                foreach (PositionInGrid pos in positions)
+                {
+                    bool fap = true;
+                    bool penis = false;
+                    IEnumerable<GameComponent> comps = tools.GetGameComponentsAt<GameComponent>(pos);
+                    foreach (GameComponent comp in comps)
+                    {
+                        penis = true;
+                        if (!comp.Model.Collides)
+                            fap = fap && true;
+                        else if (comp is EntityGComponent && (comp.Model as Entity).CanBePushed)
+                            fap = fap && true;
+                        else
+                            fap = false;
+                    }
+                    if (penis && fap)
+                        verifiedPositions.Add(pos);
+                }
+                target = verifiedPositions[rnd.Next(verifiedPositions.Count)];
+                onTheWay = true;
+            }
+        }
+        public void GoToPosition(PositionInGrid pos)
+        {
+            Direction direction = PositionInGrid.GetDirection(Position, pos);
+            Move(direction);
         }
         protected override void LoadContent()
         {
             texture = Textures.Mob;
             base.LoadContent();
         }
-        private bool tryToCatchPlayer()
-        {
-            for (int x = Vision; x > 0; x--)
-            {
-                if (tools.GetEntityAt(Position.ApplyDirection(Direction.up, x)) is Player)
-                {
-                    Move(Direction.up);
-                    return true;
-                }
-                if (tools.GetEntityAt(Position.ApplyDirection(Direction.down, x)) is Player)
-                {
-                    Move(Direction.down);
-                    return true;
-                }
-                if (tools.GetEntityAt(Position.ApplyDirection(Direction.left, x)) is Player)
-                {
-                    Move(Direction.left);
-                    return true;
-                }
-                if (tools.GetEntityAt(Position.ApplyDirection(Direction.right, x)) is Player)
-                {
-                    Move(Direction.right);
-                    return true;
-                }
-            }
-            return false;
-        }
-        private void wander()
-        {
-            if (!tryToCatchPlayer())
-            {
-                if (MoveRatio > 0)
-                    switch (GameArea.mobAIRandom.Next(0, MoveRatio * 4))
-                    {
-                        case 0:
-                            if (this.Move(Direction.left))
-                                break;
-                            else
-                                return;
-                        case 1:
-                            if (this.Move(Direction.up))
-                                break;
-                            else
-                                return;
-                        case 2:
-                            if (this.Move(Direction.right))
-                                break;
-                            else
-                                return;
-                        case 3:
-                            if (this.Move(Direction.down))
-                                break;
-                            else
-                                return;
-                    }
-            }
-        }
-    }
     }
 }
-*/

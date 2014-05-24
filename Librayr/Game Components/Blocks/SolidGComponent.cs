@@ -4,16 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Arman_Class_Library.Game_Components.Blocks
+namespace Arman_Class_Library
 {
     public class SolidGComponent : BlockGComponent
     {
-        private Solid model;
-        public SolidGComponent(Game game, GameDataTools tools, Solid model)
-            : base(game, tools, model)
+        public new Solid Model { get; private set; }
+        public SolidGComponent(GameComponents tools, Solid model)
+            : base(tools, model)
         {
-
-            this.model = model;
+            Model = model;
+        }
+        protected override void LoadContent()
+        {
+            texture = Textures.Solid;
+            base.LoadContent();
         }
     }
 }

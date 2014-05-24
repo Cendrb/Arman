@@ -93,7 +93,7 @@ namespace Level_Editor
 
         private PositionInGrid firstPosition;
         private PositionInGrid secondPosition;
-        private bool blocksEnabled, entitiesEnabled, coinsEnabled = false;
+        private bool blocksEnabled, entitiesEnabled = false;
         private bool changesSaved = true;
         private bool ctrlPressed, zPressed = false;
         private Stack<GameData> dataStack;
@@ -109,7 +109,6 @@ namespace Level_Editor
 
             blocksLayerCheckBox.IsChecked = true;
             entitiesLayerCheckBox.IsChecked = true;
-            coinsLayerCheckBox.IsChecked = true;
 
             activateDetectors.IsChecked = true;
             collectCoins.IsChecked = false;
@@ -176,7 +175,6 @@ namespace Level_Editor
             // Layers checkboxes
             blocksLayerCheckBox.IsEnabled = false;
             entitiesLayerCheckBox.IsEnabled = false;
-            coinsLayerCheckBox.IsEnabled = false;
         }
         private void enableControlsForLevel()
         {
@@ -200,7 +198,6 @@ namespace Level_Editor
             // Layers checkboxes
             blocksLayerCheckBox.IsEnabled = true;
             entitiesLayerCheckBox.IsEnabled = true;
-            coinsLayerCheckBox.IsEnabled = true;
 
             ChoosenTool = Tools.solid;
         }
@@ -240,16 +237,16 @@ namespace Level_Editor
                         break;
                     case Tools.coin:
                         #region Coin
-                        foreach (Coin coin in data.Coins.ToList())
+                        foreach (Block block in data.Blocks.ToList())
                         {
-                            if (coin.Position == position)
-                                data.Coins.Remove(coin);
+                            if (block.Position == position)
+                                data.Blocks.Remove(block);
                         }
                         Windows.Coin coinWindow = new Windows.Coin();
                         coinWindow.ShowDialog();
                         try
                         {
-                            data.Coins.Add(new Coin(null, position, null, (int)coinWindow.valueUpDown.Value));
+                            data.Blocks.Add(new Coin(position, coinWindow.blastResistance.Value.Value, coinWindow.valueUpDown.Value.Value));
                         }
                         catch (Exception ex)
                         {
@@ -275,13 +272,12 @@ namespace Level_Editor
                         try
                         {
                             blockMovableBlockOnApproach = detector.blockPlacedMovableBlockCheckBox.IsChecked.Value;
-                            color = new System.Drawing.Color()
-                            color.
+                            color = detector.colorPicker.SelectedColor;
                             addToObjectives = detector.objectives.IsChecked.Value;
                             if (detector.removeBlock.IsChecked == true)
-                                data.Blocks.Add(new Detector(position, 69.0, color, blockMovableBlockOnApproach, addToObjectives, detector.blockToRemove));
+                                data.Blocks.Add(new Detector(position, 69.0, ArmanColor.ParseWindowsColor(color), blockMovableBlockOnApproach, addToObjectives, detector.blockToRemove));
                             else
-                                data.Blocks.Add(new Detector(null, position, null, color, blockMovableBlockOnApproach, addToObjectives));
+                                data.Blocks.Add(new Detector(position, 69.0, ArmanColor.ParseWindowsColor(color), blockMovableBlockOnApproach, addToObjectives, new PositionInGrid(-1)));
                         }
                         catch (Exception ex)
                         {
@@ -316,7 +312,7 @@ namespace Level_Editor
                         mob.ShowDialog();
                         try
                         {
-                            data.Entities.Add(new Mob(null, position, null, mob.canPushCheckBox.IsChecked.Value, mob.canBePushedCheckBox.IsChecked.Value, mob.nameTextBox.Text, (float)mob.speed.Value.Value, (int)mob.vision.Value, (int)mob.moveRatio.Value.Value));
+                            data.Entities.Add(new Mob(position, mob.nameTextBox.Text, mob.canPushCheckBox.IsChecked.Value, mob.canBePushedCheckBox.IsChecked.Value, (float)mob.speed.Value.Value, mob.collides.IsChecked.Value, mob.health.Value.Value, mob.invulnerable.IsChecked.Value, mob.vision.Value.Value, mob.wanderRange.Value.Value, mob.wanderChance.Value.Value));
                         }
                         catch (Exception ex)
                         {
@@ -339,7 +335,7 @@ namespace Level_Editor
 
                         try
                         {
-                            data.Entities.Add(new MovableBlock(null, position, null, mo.canPushCheckBox.IsChecked.Value, mo.canBePushedCheckBox.IsChecked.Value, mo.nameTextBox.Text, new Microsoft.Xna.Framework.Color(mo.colorPicker.SelectedColor.R, mo.colorPicker.SelectedColor.G, mo.colorPicker.SelectedColor.B, mo.colorPicker.SelectedColor.A)));
+                            data.Entities.Add(new MovableBlock(position, mo.nameTextBox.Text, mo.canPushCheckBox.IsChecked.Value, mo.canBePushedCheckBox.IsChecked.Value, ArmanColor.ParseWindowsColor(mo.colorPicker.SelectedColor)));
                         }
                         catch (Exception ex)
                         {
@@ -381,7 +377,7 @@ namespace Level_Editor
                             if (block.Position == position)
                                 data.Blocks.Remove(block);
                         }
-                        data.Blocks.Add(new Solid(position));
+                        data.Blocks.Add(new Solid(position, 69.0));
                         #endregion
                         break;
                 }
@@ -403,7 +399,6 @@ namespace Level_Editor
             // Příprava na následující akci
             blocksEnabled = (bool)blocksLayerCheckBox.IsChecked;
             entitiesEnabled = (bool)entitiesLayerCheckBox.IsChecked;
-            coinsEnabled = (bool)coinsLayerCheckBox.IsChecked;
 
             Point point = e.GetPosition((Canvas)sender);
             PositionInGrid position2 = new PositionInGrid((int)point.X / data.OneBlockSize, (int)point.Y / data.OneBlockSize);
@@ -417,7 +412,7 @@ namespace Level_Editor
                     {
                         if (block.Position == position && !(block is Air))
                         {
-                            data.Blocks.Add(new Air(null, position, null));
+                            data.Blocks.Add(new Air(position));
                             data.Blocks.Remove(block);
                         }
                     }
@@ -428,14 +423,6 @@ namespace Level_Editor
                     {
                         if (entity.Position == position)
                             data.Entities.Remove(entity);
-                    }
-                }
-                if (coinsEnabled)
-                {
-                    foreach (Coin coin in data.Coins.ToList())
-                    {
-                        if (coin.Position == position)
-                            data.Coins.Remove(coin);
                     }
                 }
             });
@@ -467,7 +454,6 @@ namespace Level_Editor
             this.Title = "Arman Level Editor - " + data.Name;
             data.Blocks.Clear();
             data.Entities.Clear();
-            data.Coins.Clear();
             generateAirAndResizeWindow(data.XGameArea, data.YGameArea);
             enableControlsForLevel();
             changesSaved = false;
@@ -649,11 +635,16 @@ namespace Level_Editor
                         detectorColor = new Rectangle();
                         detectorColor.Width = data.OneBlockSize / 2;
                         detectorColor.Height = data.OneBlockSize / 2;
-                        detectorColor.Fill = new SolidColorBrush(Color.FromArgb((block as Detector).LockColor.A, (block as Detector).LockColor.R, (block as Detector).LockColor.G, (block as Detector).LockColor.B));
+                        detectorColor.Fill = new SolidColorBrush(Color.FromScRgb((block as Detector).LockColor.A, (block as Detector).LockColor.R, (block as Detector).LockColor.G, (block as Detector).LockColor.B));
                         rect.Fill = new SolidColorBrush(Colors.Green);
                     }
                     else if (block is Home)
                         rect.Fill = new SolidColorBrush(Colors.DarkBlue);
+                    else if (block is Coin)
+                    {
+                        rect.Stroke = new SolidColorBrush(Colors.OrangeRed);
+                        rect.Fill = new SolidColorBrush(Colors.Yellow);
+                    }
 
                     rect.Width = data.OneBlockSize;
                     rect.Height = data.OneBlockSize;
@@ -666,19 +657,6 @@ namespace Level_Editor
                         Canvas.SetLeft(detectorColor, block.Position.X * data.OneBlockSize + data.OneBlockSize / 4);
                         Canvas.SetTop(detectorColor, block.Position.Y * data.OneBlockSize + data.OneBlockSize / 4);
                     }
-                }
-
-            if ((bool)coinsLayerCheckBox.IsChecked)
-                foreach (Coin coin in data.Coins)
-                {
-                    Rectangle rect = new Rectangle();
-                    rect.Width = data.OneBlockSize / 2;
-                    rect.Height = data.OneBlockSize / 2;
-                    rect.Stroke = new SolidColorBrush(Colors.OrangeRed);
-                    rect.Fill = new SolidColorBrush(Colors.Yellow);
-                    levelCanvas.Children.Add(rect);
-                    Canvas.SetLeft(rect, coin.Position.X * data.OneBlockSize + data.OneBlockSize / 4);
-                    Canvas.SetTop(rect, coin.Position.Y * data.OneBlockSize + data.OneBlockSize / 4);
                 }
             if ((bool)entitiesLayerCheckBox.IsChecked)
                 foreach (Entity entity in data.Entities)
@@ -695,7 +673,7 @@ namespace Level_Editor
                         mBColor = new Rectangle();
                         mBColor.Width = data.OneBlockSize / 2;
                         mBColor.Height = data.OneBlockSize / 2;
-                        mBColor.Fill = new SolidColorBrush(Color.FromArgb((entity as MovableBlock).KeyColor.A, (entity as MovableBlock).KeyColor.R, (entity as MovableBlock).KeyColor.G, (entity as MovableBlock).KeyColor.B));
+                        mBColor.Fill = new SolidColorBrush(Color.FromScRgb((entity as MovableBlock).KeyColor.A, (entity as MovableBlock).KeyColor.R, (entity as MovableBlock).KeyColor.G, (entity as MovableBlock).KeyColor.B));
                         rect.Fill = new SolidColorBrush(Colors.Purple);
                     }
                     else if (entity is Player)
@@ -722,7 +700,7 @@ namespace Level_Editor
                 fileName = dialog.FileName;
             if (fileName != String.Empty)
             {
-                dataLoader = new DataLoader(fileName, null, null);
+                dataLoader = new DataLoader(fileName);
                 data = dataLoader.ReadData(true);
                 resizeWindow(data.XGameArea, data.YGameArea);
                 refresh();
@@ -747,7 +725,7 @@ namespace Level_Editor
                 fileName = dialog.FileName;
             if (fileName != String.Empty)
             {
-                dataLoader = new DataLoader(fileName, null, null);
+                dataLoader = new DataLoader(fileName);
                 dataLoader.SaveData(data);
                 changesSaved = true;
                 return true;
@@ -774,7 +752,7 @@ namespace Level_Editor
             for (int x = 0; x < sizeX; x++)
                 for (int y = 0; y < sizeY; y++)
                 {
-                    data.Blocks.Add(new Air(null, new PositionInGrid(x, y), null));
+                    data.Blocks.Add(new Air(new PositionInGrid(x, y)));
                 }
             resizeWindow(sizeX, sizeY);
             refresh();

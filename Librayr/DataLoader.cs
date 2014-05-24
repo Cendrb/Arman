@@ -24,7 +24,6 @@ namespace Arman_Class_Library
         public DataLoader(string path)
         {
             document = new XmlDocument();
-
             this.Path = path;
         }
         public GameData ReadData(bool forceReload)
@@ -42,7 +41,8 @@ namespace Arman_Class_Library
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(GameData));
                 TextReader textReader = new StreamReader(Path);
-                return (GameData)serializer.Deserialize(textReader);
+                GameData data = (GameData)serializer.Deserialize(textReader);
+                return data;
             }
             catch (XmlException e)
             {

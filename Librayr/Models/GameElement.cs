@@ -10,6 +10,7 @@ namespace Arman_Class_Library
     {
         public string Name { get; set; }
         public PositionInGrid Position { get; set; }
+        public bool Collides { get; set; }
         public string Info
         {
             get

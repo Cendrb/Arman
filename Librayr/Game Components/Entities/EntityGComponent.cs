@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-/*
+
 namespace Arman_Class_Library
 {
-    public class EntityGComponent
+    public class EntityGComponent : GameComponent
     {
         public bool CanPush { get; private set; }
         public bool CanBePushed { get; set; }
@@ -19,56 +20,36 @@ namespace Arman_Class_Library
         private Direction movingDirection;
         private float movingDifference;
 
-        /// <summary>
-        /// Creates new Entity instance
-        /// </summary>
-        /// <param name="game">Main game component</param>
-        /// <param name="spriteBatch">Specifies where to draw textures</param>
-        /// <param name="position">Specifies position in game grid</param>
-        /// <param name="canPush">Defines if that entity can push others</param>
-        /// <param name="canBePushed">Defines if that entity can be pushed by others</param>
-        /// <param name="move">Super-action to solve move dependencies - returns result</param>
-        /// <param name="name">Name of entity</param>
-        public Entity(Game game, PositionInGrid position, GameDataTools tools, bool canPush, bool canBePushed, string name, float speed)
-            : base(game, position, tools)
-        {
-            movingDifference = 0.0F;
-            Name = name;
-            Speed = speed;
-            CanPush = canPush;
-            CanBePushed = canBePushed;
-            Position = position;
+        public new Entity Model { get; private set; }
 
+        public EntityGComponent(GameComponents tools, Entity entity)
+            : base(tools, entity)
+        {
+            this.DrawOrder = 69;
+            movingDifference = 0.0F;
             IsBeingPushed = false;
+            Model = entity;
         }
         public override void Update(GameTime gameTime)
         {
             if (IsMoving)
-                movingDifference += (float)GameArea.OneBlockSize / (GameArea.TimeForMove - Speed);
-            if (movingDifference >= GameArea.OneBlockSize)
-            {
-                movingDifference = 0;
-                IsMoving = false;
-                Position = Position.ApplyDirection(movingDirection);
-                if (IsBeingPushed)
+                movingDifference += (float)tools.Data.OneBlockSize / (tools.TimeForMove - Speed);
+                if (movingDifference >= tools.Data.OneBlockSize)
                 {
-                    Speed = speedBeforePush;
-                    IsBeingPushed = false;
+                    movingDifference = 0;
+                    IsMoving = false;
+                    Position = Position.ApplyDirection(movingDirection);
+                    if (IsBeingPushed)
+                    {
+                        Speed = speedBeforePush;
+                        IsBeingPushed = false;
+                    }
                 }
-            }
             base.Update(gameTime);
-        }
-        public override void Draw(GameTime gameTime)
-        {
-            Vector2 position = getAbsoluteCoordinates();
-            spriteBatch.Begin();
-            spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, GameArea.OneBlockSize, GameArea.OneBlockSize), Color.White);
-            spriteBatch.End();
-            base.Draw(gameTime);
         }
         public bool Move(Direction direction)
         {
-            List<Entity> senders = new List<Entity>();
+            List<EntityGComponent> senders = new List<EntityGComponent>();
             senders.Add(this);
             if (solveColisions(direction, senders))
             {
@@ -78,7 +59,7 @@ namespace Arman_Class_Library
             else
                 return false;
         }
-        public bool Move(Direction direction, List<Entity> senders)
+        public bool Move(Direction direction, List<EntityGComponent> senders)
         {
             // = is being pushed by another entity
             speedBeforePush = Speed;
@@ -98,44 +79,39 @@ namespace Arman_Class_Library
             IsMoving = true;
             movingDirection = direction;
         }
-        private bool solveColisions(Direction direction, List<Entity> senders)
+        private bool solveColisions(Direction direction, List<EntityGComponent> senders)
         {
             // Prepare local variables
-            Entity originalSender = senders.Last();
+            EntityGComponent originalSender = senders.Last();
             PositionInGrid target = originalSender.Position.ApplyDirection(direction);
 
             // Most important IF :)
             if (originalSender.IsMoving)
                 return false;
 
-            Block targetBlock = tools.GetBlockAt(target);
-            Entity targetEntity = tools.GetEntityAt(target);
+            IEnumerable<GameComponent> targetComponents = tools.GetGameComponentsAt<GameComponent>(target);
 
-            #region Colision with static blocks
-            if (targetBlock is Solid)
-                return false;
-            #endregion
-
-            #region Colision with entities
-
-                // Basic pushing
-            if (targetEntity != null)
+            foreach (GameComponent component in targetComponents)
             {
-                if ((targetEntity is Player && originalSender is Mob) || (targetEntity is Mob && originalSender is Player)) // KILLING!
-                    return true;
-                else if (targetEntity.CanBePushed && originalSender.CanPush)
+                if (component.Model.Collides)
                 {
-                    if (!targetEntity.Move(direction, senders))
-                        return false;
-                }
-                else
-                {
-                    if (!originalSender.CanPush || !targetEntity.CanBePushed)
-                        return false;
+                    if (component is EntityGComponent)
+                    {
+                        if ((component is PlayerGComponent && originalSender is MobGComponent) || (component is MobGComponent && originalSender is PlayerGComponent)) // KILLING!
+                            return true;
+                        EntityGComponent e = component as EntityGComponent;
+                        if (e.Model.CanBePushed && this.CanPush)
+                        {
+                            return e.Move(direction, senders);
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    return false;
                 }
             }
-            #endregion
-
             #region Out of area colisions
             if (target.X < 0 || target.Y < 0)
                 return false;
@@ -144,7 +120,7 @@ namespace Arman_Class_Library
             #endregion
             return true;
         }
-        protected Vector2 getAbsoluteCoordinates()
+        public override Vector2 GetAbsoluteCoordinates()
         {
             Vector2 relative = getRelativeCoordinates();
             return new Vector2(relative.X + GameArea.StartingCoordinates.X, relative.Y + GameArea.StartingCoordinates.Y);
@@ -157,27 +133,26 @@ namespace Arman_Class_Library
                 switch (movingDirection)
                 {
                     case Direction.up:
-                        coord.X = Position.X * GameArea.OneBlockSize;
-                        coord.Y = Position.Y * GameArea.OneBlockSize - movingDifference;
+                        coord.X = Position.X * tools.Data.OneBlockSize;
+                        coord.Y = Position.Y * tools.Data.OneBlockSize - movingDifference;
                         break;
                     case Direction.down:
-                        coord.X = Position.X * GameArea.OneBlockSize;
-                        coord.Y = Position.Y * GameArea.OneBlockSize + movingDifference;
+                        coord.X = Position.X * tools.Data.OneBlockSize;
+                        coord.Y = Position.Y * tools.Data.OneBlockSize + movingDifference;
                         break;
                     case Direction.left:
-                        coord.X = Position.X * GameArea.OneBlockSize - movingDifference;
-                        coord.Y = Position.Y * GameArea.OneBlockSize;
+                        coord.X = Position.X * tools.Data.OneBlockSize - movingDifference;
+                        coord.Y = Position.Y * tools.Data.OneBlockSize;
                         break;
                     case Direction.right:
-                        coord.X = Position.X * GameArea.OneBlockSize + movingDifference;
-                        coord.Y = Position.Y * GameArea.OneBlockSize;
+                        coord.X = Position.X * tools.Data.OneBlockSize + movingDifference;
+                        coord.Y = Position.Y * tools.Data.OneBlockSize;
                         break;
                 }
                 return coord;
             }
             else
-                return new Vector2(Position.X * GameArea.OneBlockSize, Position.Y * GameArea.OneBlockSize);
+                return new Vector2(Position.X * tools.Data.OneBlockSize, Position.Y * tools.Data.OneBlockSize);
         }
     }
 }
-*/

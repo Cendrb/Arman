@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 
 namespace Arman_Class_Library
-{
+{/*
     public class GameDataTools
     {
         public List<Detector> Detectors { get; private set; }
@@ -68,5 +68,5 @@ namespace Arman_Class_Library
                     Players.Add(e as Player);
             }
         }
-    }
+    }*/
 }

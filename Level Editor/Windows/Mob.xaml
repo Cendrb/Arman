@@ -2,20 +2,26 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Title="Enter mob data" Height="317" Width="300" ResizeMode="NoResize" Loaded="Window_Loaded">
+        Title="Enter mob data" Height="402" Width="260" ResizeMode="NoResize" Loaded="Window_Loaded">
     <Grid>
         <Label Content="Enter mob data" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" FontSize="16"/>
-        <TextBox x:Name="nameTextBox" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Margin="98,46,10,0" Text="Unknown mob"/>
+        <TextBox x:Name="nameTextBox" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Margin="114,46,10,0" ToolTip="Leave blank for generic name"/>
         <Label Content="Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,46,0,0"/>
         <Label Content="Moving" HorizontalAlignment="Left" Margin="10,77,0,0" Height="26" VerticalAlignment="Top"/>
         <CheckBox x:Name="canBePushedCheckBox" Content="Can be pushed by other entities" HorizontalAlignment="Left" Margin="10,123,0,0" Height="15" VerticalAlignment="Top"/>
         <CheckBox x:Name="canPushCheckBox" Content="Can push other entities" HorizontalAlignment="Left" Margin="10,103,0,0" Height="15" VerticalAlignment="Top"/>
-        <xctk:DoubleUpDown x:Name="speed" Margin="96,178,10,0" Value="8" Height="23" VerticalAlignment="Top"/>
-        <Label x:Name="speedLabel" Content="Speed" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,175,0,0"/>
         <Button Content="Spawn" Margin="10,0,10,10" Click="Button_Click" Height="33" VerticalAlignment="Bottom"/>
-        <Label Content="Vision" HorizontalAlignment="Left" Margin="10,206,0,0" Height="26" VerticalAlignment="Top"/>
-        <xctk:IntegerUpDown x:Name="vision" Margin="96,209,10,0" Value="10" ToolTip="How many blocks away can mob detect player" Height="23" VerticalAlignment="Top"/>
-        <Label Content="Move ratio" HorizontalAlignment="Left" Margin="10,144,0,0" Height="26" VerticalAlignment="Top"/>
-        <xctk:DoubleUpDown x:Name="moveRatio" Margin="96,144,10,0" Value="4" ToolTip="In one case of [inserted value] the mob will move" Height="23" VerticalAlignment="Top"/>
+        <CheckBox x:Name="collides" Content="Solid for other entities" HorizontalAlignment="Left" Margin="10,143,0,0" Height="15" VerticalAlignment="Top" ToolTip="Can other entities enter it?"/>
+        <CheckBox x:Name="invulnerable" Content="Invulnerable" HorizontalAlignment="Left" Margin="10,163,0,0" Height="15" VerticalAlignment="Top" ToolTip="Can other entities enter it?"/>
+        <xctk:DoubleUpDown x:Name="speed" Margin="114,184,10,0" Value="8" Height="26" VerticalAlignment="Top"/>
+        <Label x:Name="speedLabel" Content="Speed" HorizontalAlignment="Left" Margin="10,184,0,0" VerticalAlignment="Top" Height="26"/>
+        <Label Content="Vision" HorizontalAlignment="Left" Margin="10,212,0,0" Height="26" VerticalAlignment="Top"/>
+        <xctk:IntegerUpDown x:Name="vision" Margin="114,212,10,0" Value="10" ToolTip="How many blocks away can mob detect player" Height="26" VerticalAlignment="Top"/>
+        <Label Content="Wander range" HorizontalAlignment="Left" Margin="10,240,0,0" Height="26" VerticalAlignment="Top"/>
+        <xctk:IntegerUpDown x:Name="wanderRange" Margin="114,240,10,0" Value="4" ToolTip="How far away can mob go on one move" Height="26" VerticalAlignment="Top"/>
+        <Label Content="Wander chance" HorizontalAlignment="Left" Margin="10,266,0,0" Height="26" VerticalAlignment="Top"/>
+        <xctk:IntegerUpDown x:Name="wanderChance" Margin="114,268,10,0" Value="10" ToolTip="" Height="26" VerticalAlignment="Top"/>
+        <Label Content="Health" HorizontalAlignment="Left" Margin="10,296,0,0" Height="26" VerticalAlignment="Top"/>
+        <xctk:DoubleUpDown x:Name="health" Margin="114,296,10,0" Value="10" ToolTip="" Height="26" VerticalAlignment="Top"/>
     </Grid>
 </Window>

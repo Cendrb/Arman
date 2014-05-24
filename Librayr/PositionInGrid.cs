@@ -36,11 +36,11 @@ namespace Arman_Class_Library
             else
                 return 1;
         }
-        public static bool operator == (PositionInGrid pos1, PositionInGrid pos2)
+        public static bool operator ==(PositionInGrid pos1, PositionInGrid pos2)
         {
             return pos1.X == pos2.X && pos1.Y == pos2.Y;
         }
-        public static bool operator != (PositionInGrid pos1, PositionInGrid pos2)
+        public static bool operator !=(PositionInGrid pos1, PositionInGrid pos2)
         {
             return pos1.X != pos2.X || pos1.Y != pos2.Y;
         }
@@ -95,6 +95,36 @@ namespace Arman_Class_Library
         public override string ToString()
         {
             return String.Join(",", X, Y);
+        }
+        public static Direction GetDirection(PositionInGrid from, PositionInGrid to)
+        {
+            int xDif = from.X - to.X;
+            int yDif = from.Y - to.Y;
+
+            if(Math.Abs(xDif) > Math.Abs(yDif))
+            {
+                if (xDif > 0)
+                    return Direction.right;
+                else
+                    return Direction.left;
+            }
+            else
+            {
+                if (yDif > 0)
+                    return Direction.up;
+                else
+                    return Direction.down;
+            }
+            throw new InvalidOperationException("Unknown direction");
+        }
+        public static List<PositionInGrid> GetPositionsInSquareRadius(int r, PositionInGrid center)
+        {
+            List<PositionInGrid> positions = new List<PositionInGrid>();
+            PositionInGrid corner = center.ApplyDirection(Direction.up, r).ApplyDirection(Direction.left, r);
+            for (int x = 2 * r; x >= 0; x--)
+                for (int y = 2 * r; y >= 0; y--)
+                    positions.Add(new PositionInGrid(corner.X + x, corner.Y + y));
+            return positions;
         }
         public static PositionInGrid Parse(string text)
         {

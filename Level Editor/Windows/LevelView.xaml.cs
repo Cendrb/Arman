@@ -49,7 +49,7 @@ namespace Level_Editor.Windows
                     detectorColor = new Rectangle();
                     detectorColor.Width = data.OneBlockSize / 2;
                     detectorColor.Height = data.OneBlockSize / 2;
-                    detectorColor.Fill = new SolidColorBrush(Color.FromArgb((block as Arman_Class_Library.Detector).LockColor.A, (block as Arman_Class_Library.Detector).LockColor.R, (block as Arman_Class_Library.Detector).LockColor.G, (block as Arman_Class_Library.Detector).LockColor.B));
+                    detectorColor.Fill = new SolidColorBrush(Color.FromScRgb((block as Arman_Class_Library.Detector).LockColor.A, (block as Arman_Class_Library.Detector).LockColor.R, (block as Arman_Class_Library.Detector).LockColor.G, (block as Arman_Class_Library.Detector).LockColor.B));
                     rect.Fill = new SolidColorBrush(Colors.Green);
                 }
                 else if (block is Arman_Class_Library.Home)

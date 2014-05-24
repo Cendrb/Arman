@@ -17,19 +17,18 @@ namespace Arman_Class_Library
     [XmlInclude(typeof(Solid))]
     public class Block : GameElement
     {
-        public bool Solid { get; set; }
         public double BlastResistance { get; set; }
 
         public Block(PositionInGrid position, string name, bool solid, double blastResistence)
             : base(position, name)
         {
-            Solid = solid;
+            Collides = solid;
             BlastResistance = blastResistence;
         }
         public Block(PositionInGrid position, bool solid, double blastResistence)
             : base(position, "Generic block")
         {
-            Solid = solid;
+            Collides = solid;
             BlastResistance = blastResistence;
         }
         public Block()

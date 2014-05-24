@@ -15,23 +15,6 @@ namespace Arman_Class_Library
         public bool CanPush { get; set; }
         public bool CanBePushed { get; set; }
         public float Speed { get; set; }
-        private bool collides;
-        public bool Collides
-        {
-            get
-            {
-                return collides;
-            }
-            set
-            {
-                collides = value;
-                if (!collides)
-                {
-                    CanPush = false;
-                    CanBePushed = false;
-                }
-            }
-        }
         public double Health { get; set; }
         public bool Invulnerable { get; set; }
 

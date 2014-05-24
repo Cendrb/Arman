@@ -4,16 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Arman_Class_Library.Game_Components.Blocks
+namespace Arman_Class_Library
 {
     public class CoinGComponent : BlockGComponent
     {
-        private Coin model;
-        public CoinGComponent(Game game, GameDataTools tools, Coin model)
-            : base(game, tools, model)
+        public new Coin Model { get; private set; }
+        public CoinGComponent(GameComponents tools, Coin model)
+            : base(tools, model)
         {
-
-            this.model = model;
+            this.Model = model;
+        }
+        protected override void LoadContent()
+        {
+            texture = Textures.Coin;
+            base.LoadContent();
         }
     }
 }

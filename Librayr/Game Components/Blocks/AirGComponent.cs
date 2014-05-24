@@ -4,16 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Arman_Class_Library.Game_Components
+namespace Arman_Class_Library
 {
     public class AirGComponent : BlockGComponent
     {
-        private Air model;
-        public AirGComponent(Game game, GameDataTools tools, Air model)
-            : base(game, tools, model)
+        public new Air Model { get; private set; }
+        public AirGComponent(GameComponents tools, Air model)
+            : base(tools, model)
         {
-
-            this.model = model;
+            Model = model;
+        }
+        protected override void LoadContent()
+        {
+            texture = Textures.Air;
+            base.LoadContent();
         }
     }
 }

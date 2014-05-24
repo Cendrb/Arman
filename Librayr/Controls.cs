@@ -34,5 +34,14 @@ namespace Arman_Class_Library
 
             return new Controls(up, down, left, right);
         }
+        public override string ToString()
+        {
+            string[] controls = new string[4];
+            controls[0] = Up;
+            controls[1] = Down;
+            controls[2] = Left;
+            controls[3] = Right;
+            return String.Join(",", controls);
+        }
     }
 }

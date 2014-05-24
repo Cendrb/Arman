@@ -23,10 +23,10 @@ namespace Arman_Class_Library
 
         public static SpriteBatch SpriteBatch { get; private set; }
 
-        public static bool Load(TexturesPaths paths, GameDataTools tools)
+        public static bool Load(TexturesPaths paths, GameComponents tools)
         {
             Air = tools.Game.Content.Load<Texture2D>(paths.AirBlock);
-            Mob = tools.Game.Content.Load<Texture2D>(paths.KeyLockColorDot);
+            Mob = tools.Game.Content.Load<Texture2D>(paths.Mob);
             MovableBlock = tools.Game.Content.Load<Texture2D>(paths.MovableBlock);
             Solid = tools.Game.Content.Load<Texture2D>(paths.SolidBlock);
             Player = tools.Game.Content.Load<Texture2D>(paths.Player);

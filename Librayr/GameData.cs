@@ -10,7 +10,6 @@ namespace Arman_Class_Library
     {
         public List<Block> Blocks { get; set; }
         public List<Entity> Entities { get; set; }
-        public List<Coin> Coins { get; set; }
 
         public int XGameArea { get; set; }
         public int YGameArea { get; set; }
@@ -24,7 +23,6 @@ namespace Arman_Class_Library
         {
             Blocks = new List<Block>();
             Entities = new List<Entity>();
-            Coins = new List<Coin>();
             Objectives = new Objectives();
         }
 
@@ -33,7 +31,6 @@ namespace Arman_Class_Library
             GameData newGameData = new GameData();
             newGameData.Blocks = this.Blocks.ToList();
             newGameData.Entities = this.Entities.ToList();
-            newGameData.Coins = this.Coins.ToList();
             newGameData.Name = Name;
             newGameData.Speed = Speed;
             newGameData.XGameArea = XGameArea;
