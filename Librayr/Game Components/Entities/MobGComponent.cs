@@ -26,7 +26,7 @@ namespace Arman_Class_Library
         {
             if (Position == target)
                 onTheWay = false;
-            if (onTheWay)
+            if (onTheWay && !IsMoving)
                 GoToPosition(target);
             if (!IsMoving)
             {
