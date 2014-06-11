@@ -15,6 +15,9 @@ namespace Arman_Class_Library
         public float Speed { get; private set; }
         public bool IsBeingPushed { get; private set; }
 
+        public Navigator Navigator { get; private set; }
+        public Tasker Tasker { get; private set; }
+
         private float speedBeforePush;
         // Moving mechanism
         private Direction movingDirection;
@@ -22,30 +25,38 @@ namespace Arman_Class_Library
 
         public new Entity Model { get; private set; }
 
-        public EntityGComponent(GameComponents tools, Entity entity)
+        public EntityGComponent(World tools, Entity entity)
             : base(tools, entity)
         {
             this.DrawOrder = 69;
             movingDifference = 0.0F;
             IsBeingPushed = false;
             Model = entity;
+            Tasker = new Tasker(this);
+            Navigator = new Navigator(this);
         }
         public override void Update(GameTime gameTime)
         {
-            if (IsMoving)
-                movingDifference += (float)tools.Data.OneBlockSize / (tools.TimeForMove - Speed);
-                if (movingDifference >= tools.Data.OneBlockSize)
-                {
-                    movingDifference = 0;
-                    IsMoving = false;
-                    Position = Position.ApplyDirection(movingDirection);
-                    if (IsBeingPushed)
-                    {
-                        Speed = speedBeforePush;
-                        IsBeingPushed = false;
-                    }
-                }
+            Tasker.Update(gameTime);
+            Navigator.Update(gameTime);
+            updateMoveLogicAndAnimation();
             base.Update(gameTime);
+        }
+        private void updateMoveLogicAndAnimation()
+        {
+            if (IsMoving)
+                movingDifference += (float)World.Data.OneBlockSize / (World.TimeForMove - Speed);
+            if (movingDifference >= World.Data.OneBlockSize)
+            {
+                movingDifference = 0;
+                IsMoving = false;
+                Position = Position.ApplyDirection(movingDirection);
+                if (IsBeingPushed)
+                {
+                    Speed = speedBeforePush;
+                    IsBeingPushed = false;
+                }
+            }
         }
         public bool Move(Direction direction)
         {
@@ -89,7 +100,7 @@ namespace Arman_Class_Library
             if (originalSender.IsMoving)
                 return false;
 
-            IEnumerable<GameComponent> targetComponents = tools.GetGameComponentsAt<GameComponent>(target);
+            IEnumerable<GameComponent> targetComponents = World.GetGameComponentsAt<GameComponent>(target);
 
             foreach (GameComponent component in targetComponents)
             {
@@ -115,7 +126,7 @@ namespace Arman_Class_Library
             #region Out of area colisions
             if (target.X < 0 || target.Y < 0)
                 return false;
-            if (target.X >= tools.Data.XGameArea || target.Y >= tools.Data.YGameArea)
+            if (target.X >= World.Data.XGameArea || target.Y >= World.Data.YGameArea)
                 return false;
             #endregion
             return true;
@@ -133,26 +144,26 @@ namespace Arman_Class_Library
                 switch (movingDirection)
                 {
                     case Direction.up:
-                        coord.X = Position.X * tools.Data.OneBlockSize;
-                        coord.Y = Position.Y * tools.Data.OneBlockSize - movingDifference;
+                        coord.X = Position.X * World.Data.OneBlockSize;
+                        coord.Y = Position.Y * World.Data.OneBlockSize - movingDifference;
                         break;
                     case Direction.down:
-                        coord.X = Position.X * tools.Data.OneBlockSize;
-                        coord.Y = Position.Y * tools.Data.OneBlockSize + movingDifference;
+                        coord.X = Position.X * World.Data.OneBlockSize;
+                        coord.Y = Position.Y * World.Data.OneBlockSize + movingDifference;
                         break;
                     case Direction.left:
-                        coord.X = Position.X * tools.Data.OneBlockSize - movingDifference;
-                        coord.Y = Position.Y * tools.Data.OneBlockSize;
+                        coord.X = Position.X * World.Data.OneBlockSize - movingDifference;
+                        coord.Y = Position.Y * World.Data.OneBlockSize;
                         break;
                     case Direction.right:
-                        coord.X = Position.X * tools.Data.OneBlockSize + movingDifference;
-                        coord.Y = Position.Y * tools.Data.OneBlockSize;
+                        coord.X = Position.X * World.Data.OneBlockSize + movingDifference;
+                        coord.Y = Position.Y * World.Data.OneBlockSize;
                         break;
                 }
                 return coord;
             }
             else
-                return new Vector2(Position.X * tools.Data.OneBlockSize, Position.Y * tools.Data.OneBlockSize);
+                return new Vector2(Position.X * World.Data.OneBlockSize, Position.Y * World.Data.OneBlockSize);
         }
     }
 }

@@ -6,8 +6,9 @@ using System.Text;
 
 namespace Arman_Class_Library
 {
-    public class GameComponents
+    public class World
     {
+        public Random Random { get; private set; }
         public float TimeForMove
         {
             get
@@ -24,10 +25,11 @@ namespace Arman_Class_Library
         private List<BlockGComponent> blocks;
         private List<EntityGComponent> entities;
 
-        public GameComponents(Game game, GameData data)
+        public World(Game game, GameData data)
         {
             this.Game = game;
             this.Data = data;
+            Random = new Random();
             components = new List<GameComponent>();
             entities = new List<EntityGComponent>();
             blocks = new List<BlockGComponent>();
@@ -45,6 +47,12 @@ namespace Arman_Class_Library
                 if (b is Detector)
                     AddBlock(new DetectorGComponent(this, b as Detector));
             }
+            /*for (int x = data.XGameArea; x != 0; x--)
+                for (int y = data.YGameArea; y != 0; y--)
+                {
+                    if (data.Blocks.Contains(new Block(new PositionInGrid(x, y), true, 0), new GameElementComparer()))
+                        blocks.Add(new AirGComponent(this, new Air(new PositionInGrid(x, y))));
+                }*/
             foreach (Entity e in data.Entities)
             {
                 if (e is MovableBlock)

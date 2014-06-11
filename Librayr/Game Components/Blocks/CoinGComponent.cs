@@ -9,7 +9,7 @@ namespace Arman_Class_Library
     public class CoinGComponent : BlockGComponent
     {
         public new Coin Model { get; private set; }
-        public CoinGComponent(GameComponents tools, Coin model)
+        public CoinGComponent(World tools, Coin model)
             : base(tools, model)
         {
             this.Model = model;

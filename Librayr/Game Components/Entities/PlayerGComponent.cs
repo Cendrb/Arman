@@ -17,7 +17,7 @@ namespace Arman_Class_Library
         public double Score { get; private set; }
         public PositionInGrid Spawnpoint { get; private set; }
 
-        public PlayerGComponent(GameComponents tools, Player model)
+        public PlayerGComponent(World tools, Player model)
             : base(tools, model)
         {
             Model = model;
@@ -45,7 +45,7 @@ namespace Arman_Class_Library
         public void PickupCoin(CoinGComponent coin)
         {
             Score += coin.Model.Value;
-            tools.RemoveBlock(coin);
+            World.RemoveBlock(coin);
         }
         public void Respawn()
         {
@@ -62,10 +62,10 @@ namespace Arman_Class_Library
                 Model.Invulnerable = false;
             if (!IsMoving)
                 ReactToControls(Keyboard.GetState());
-            IEnumerable<CoinGComponent> coins = tools.GetGameComponentsAt<CoinGComponent>(Model.Position);
+            IEnumerable<CoinGComponent> coins = World.GetGameComponentsAt<CoinGComponent>(Model.Position);
             foreach (CoinGComponent coin in coins)
                 PickupCoin(coin);
-            IEnumerable<HomeGComponent> homes = tools.GetGameComponentsAt<HomeGComponent>(Model.Position);
+            IEnumerable<HomeGComponent> homes = World.GetGameComponentsAt<HomeGComponent>(Model.Position);
             if (homes.Count() > 0)
                 IsHome = true;
             else

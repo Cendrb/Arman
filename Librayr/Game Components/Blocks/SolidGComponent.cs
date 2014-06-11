@@ -9,7 +9,7 @@ namespace Arman_Class_Library
     public class SolidGComponent : BlockGComponent
     {
         public new Solid Model { get; private set; }
-        public SolidGComponent(GameComponents tools, Solid model)
+        public SolidGComponent(World tools, Solid model)
             : base(tools, model)
         {
             Model = model;

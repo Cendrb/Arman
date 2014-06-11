@@ -9,7 +9,7 @@ namespace Arman_Class_Library
     public class BlockGComponent : GameComponent
     {
         public new Block Model { get; private set; }
-        public BlockGComponent(GameComponents tools, Block model)
+        public BlockGComponent(World tools, Block model)
             : base(tools, model)
         {
             this.DrawOrder = 5;
@@ -18,7 +18,7 @@ namespace Arman_Class_Library
 
         public Vector2 GetRelativeCoordinates()
         {
-            return new Vector2(Model.Position.X * tools.Data.OneBlockSize, Model.Position.Y * tools.Data.OneBlockSize);
+            return new Vector2(Model.Position.X * World.Data.OneBlockSize, Model.Position.Y * World.Data.OneBlockSize);
         }
         public override Vector2 GetAbsoluteCoordinates()
         {

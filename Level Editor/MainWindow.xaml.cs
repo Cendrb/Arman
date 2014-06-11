@@ -716,6 +716,7 @@ namespace Level_Editor
         }
         private bool save()
         {
+            data.Blocks.RemoveAll(filterAir);
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.Filter = "Arman level files (*.alvl)|*.alvl|All files (*.*)|*.*";
             dialog.Title = "Choose level file to save";
@@ -731,6 +732,13 @@ namespace Level_Editor
                 return true;
             }
             return false;
+        }
+        private bool filterAir(Block block)
+        {
+            if (block is Air)
+                return true;
+            else
+                return false;
         }
         private void undo()
         {

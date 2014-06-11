@@ -9,7 +9,7 @@ namespace Arman_Class_Library
     public class AirGComponent : BlockGComponent
     {
         public new Air Model { get; private set; }
-        public AirGComponent(GameComponents tools, Air model)
+        public AirGComponent(World tools, Air model)
             : base(tools, model)
         {
             Model = model;

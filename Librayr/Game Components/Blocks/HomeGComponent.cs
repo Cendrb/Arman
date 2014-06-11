@@ -9,7 +9,7 @@ namespace Arman_Class_Library
     public class HomeGComponent : BlockGComponent
     {
         public new Home Model { get; private set; }
-        public HomeGComponent(GameComponents tools, Home model)
+        public HomeGComponent(World tools, Home model)
             : base(tools, model)
         {
             Model = model;

@@ -18,7 +18,7 @@ namespace Arman_Class_Library
         private DataLoader dataLoader;
         private GameData data;
 
-        private GameComponents gameComponents;
+        private World gameComponents;
         private TexturesPaths paths;
         private string levelSourcePath;
         private SpriteBatch spriteBatch;
@@ -42,7 +42,7 @@ namespace Arman_Class_Library
 
             data = dataLoader.ReadData(true);
 
-            gameComponents = new GameComponents(Game, data);
+            gameComponents = new World(Game, data);
 
             base.Initialize();
         }

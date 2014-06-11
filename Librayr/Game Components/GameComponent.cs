@@ -9,7 +9,7 @@ namespace Arman_Class_Library
 {
     public class GameComponent : DrawableGameComponent
     {
-        protected GameComponents tools;
+        public World World { get; protected set; }
         protected Texture2D texture;
         public GameElement Model { get; private set; }
 
@@ -25,10 +25,10 @@ namespace Arman_Class_Library
             }
         }
 
-        public GameComponent(GameComponents tools, GameElement model)
+        public GameComponent(World tools, GameElement model)
             : base(tools.Game)
         {
-            this.tools = tools;
+            this.World = tools;
             this.Model = model;
         }
         public override void Draw(GameTime gameTime)

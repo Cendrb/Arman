@@ -8,7 +8,7 @@ namespace Arman_Class_Library
     public class MovableBlockGComponent : EntityGComponent
     {
         public new MovableBlock Model { get; private set; }
-        public MovableBlockGComponent(GameComponents tools, MovableBlock entity)
+        public MovableBlockGComponent(World tools, MovableBlock entity)
             : base(tools, entity)
         {
             Model = entity;

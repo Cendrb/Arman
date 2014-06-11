@@ -103,7 +103,7 @@ namespace Arman_Class_Library
 
             if(Math.Abs(xDif) > Math.Abs(yDif))
             {
-                if (xDif > 0)
+                if (xDif < 0)
                     return Direction.right;
                 else
                     return Direction.left;
@@ -132,6 +132,10 @@ namespace Arman_Class_Library
             int x = int.Parse(values[0]);
             int y = int.Parse(values[1]);
             return new PositionInGrid(x, y);
+        }
+        public static int GetSquareDistance(PositionInGrid from, PositionInGrid to)
+        {
+            return Math.Abs((from.X - to.X) * (from.Y - to.Y));
         }
     }
 }
