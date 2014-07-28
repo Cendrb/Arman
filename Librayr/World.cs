@@ -47,12 +47,6 @@ namespace Arman_Class_Library
                 if (b is Detector)
                     AddBlock(new DetectorGComponent(this, b as Detector));
             }
-            /*for (int x = data.XGameArea; x != 0; x--)
-                for (int y = data.YGameArea; y != 0; y--)
-                {
-                    if (data.Blocks.Contains(new Block(new PositionInGrid(x, y), true, 0), new GameElementComparer()))
-                        blocks.Add(new AirGComponent(this, new Air(new PositionInGrid(x, y))));
-                }*/
             foreach (Entity e in data.Entities)
             {
                 if (e is MovableBlock)

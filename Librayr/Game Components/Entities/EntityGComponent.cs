@@ -100,7 +100,7 @@ namespace Arman_Class_Library
             if (originalSender.IsMoving)
                 return false;
 
-            IEnumerable<GameComponent> targetComponents = World.GetGameComponentsAt<GameComponent>(target);
+            IEnumerable<GameComponent> targetComponents = World.GetGameComponentsAt<GameComponent>(target).ToList();
 
             foreach (GameComponent component in targetComponents)
             {

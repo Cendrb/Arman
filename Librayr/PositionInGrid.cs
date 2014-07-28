@@ -42,6 +42,10 @@ namespace Arman_Class_Library
         }
         public static bool operator !=(PositionInGrid pos1, PositionInGrid pos2)
         {
+            if ((object)pos1 == null && (object)pos2 == null)
+                return false;
+            if ((object)pos1 == null || (object)pos2 == null)
+                return true;
             return pos1.X != pos2.X || pos1.Y != pos2.Y;
         }
         public override bool Equals(object obj)

@@ -62,10 +62,10 @@ namespace Arman_Class_Library
                 Model.Invulnerable = false;
             if (!IsMoving)
                 ReactToControls(Keyboard.GetState());
-            IEnumerable<CoinGComponent> coins = World.GetGameComponentsAt<CoinGComponent>(Model.Position);
+            IEnumerable<CoinGComponent> coins = World.GetGameComponentsAt<CoinGComponent>(Model.Position).ToList();
             foreach (CoinGComponent coin in coins)
                 PickupCoin(coin);
-            IEnumerable<HomeGComponent> homes = World.GetGameComponentsAt<HomeGComponent>(Model.Position);
+            IEnumerable<HomeGComponent> homes = World.GetGameComponentsAt<HomeGComponent>(Model.Position).ToList();
             if (homes.Count() > 0)
                 IsHome = true;
             else

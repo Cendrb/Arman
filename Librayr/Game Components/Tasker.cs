@@ -23,9 +23,9 @@ namespace Arman_Class_Library
         {
             if (!entity.Navigator.Busy && tasks.Count != 0)
             {
-                pendingTasks = new Stack<AITask>(from task in tasks
+                pendingTasks = new Stack<AITask>((from task in tasks
                                                  where task.Value.Activate()
-                                                 select task.Value);
+                                                 select task.Value).ToArray());
                 while (!entity.Navigator.Busy && pendingTasks.Count != 0)
                 {
                     AITask task = pendingTasks.Pop();

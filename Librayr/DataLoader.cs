@@ -42,6 +42,12 @@ namespace Arman_Class_Library
                 XmlSerializer serializer = new XmlSerializer(typeof(GameData));
                 TextReader textReader = new StreamReader(Path);
                 GameData data = (GameData)serializer.Deserialize(textReader);
+                for (int x = data.XGameArea; x != 0; x--)
+                    for (int y = data.YGameArea; y != 0; y--)
+                    {
+                        if (!data.Blocks.Contains(new Block(new PositionInGrid(x, y), true, 0), new GameElementComparer()))
+                            data.Blocks.Add(new Air(new PositionInGrid(x, y)));
+                    }
                 return data;
             }
             catch (XmlException e)
@@ -51,13 +57,23 @@ namespace Arman_Class_Library
             return null;
         }
 
+        private bool filterAir(Block block)
+        {
+            if (block is Air)
+                return true;
+            else
+                return false;
+        }
+
         public void SaveData(GameData data)
         {
             try
             {
+                GameData newData = data.Clone();
+                newData.Blocks.RemoveAll(filterAir);
                 XmlSerializer serializer = new XmlSerializer(typeof(GameData));
                 XmlTextWriter writer = new XmlTextWriter(Path, Encoding.UTF8);
-                serializer.Serialize(writer, data);
+                serializer.Serialize(writer, newData);
                 writer.Close();
             }
             catch (Exception e)

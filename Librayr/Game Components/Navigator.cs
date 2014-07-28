@@ -9,7 +9,19 @@ namespace Arman_Class_Library
     public class Navigator
     {
         EntityGComponent entity;
-        public PositionInGrid Target { get; set; }
+        PositionInGrid target;
+        public PositionInGrid Target
+        {
+            get
+            {
+                return target;
+            }
+            set
+            {
+                Busy = true;
+                target = Target;
+            }
+        }
         public event Action Completed = delegate { };
         public bool Busy { get; private set; }
 
@@ -21,26 +33,13 @@ namespace Arman_Class_Library
 
         public void Update(GameTime time)
         {
-            if (!isNull(Target))
+            if (Target != null)
             {
                 if (entity.Position == Target)
                     completed();
-                if (!isNull(Target))
+                if (Target != null)
                     GoToPosition(Target);
             }
-        }
-
-        private bool isNull(PositionInGrid pos)
-        {
-            try
-            {
-                int x = pos.X;
-            }
-            catch(NullReferenceException e)
-            {
-                return true;
-            }
-            return false;
         }
 
         private void completed()

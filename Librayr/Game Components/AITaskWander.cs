@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace Arman_Class_Library
 {
@@ -23,12 +24,13 @@ namespace Arman_Class_Library
         {
             if (!wandering)
             {
-                navigator.Target = getRandomValidPosition();
+                Thread thread = new Thread(setRandomValidPosition);
+                thread.Start();
                 wandering = true;
             }
         }
 
-        private PositionInGrid getRandomValidPosition()
+        private void setRandomValidPosition()
         {
             List<PositionInGrid> positions = PositionInGrid.GetPositionsInSquareRadius(mob.Model.WanderRange, mob.Position);
             List<PositionInGrid> verifiedPositions = new List<PositionInGrid>();
@@ -53,7 +55,8 @@ namespace Arman_Class_Library
                 if (penis && fap)
                     verifiedPositions.Add(pos);
             }
-            return verifiedPositions[rnd.Next(verifiedPositions.Count)];
+            if(verifiedPositions.Count > 0)
+                navigator.Target = verifiedPositions[rnd.Next(verifiedPositions.Count) - 1];
         }
 
         public override bool Activate()
